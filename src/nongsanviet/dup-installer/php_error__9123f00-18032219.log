@@ -1,0 +1,7 @@
+[19-May-2026 07:52:34 UTC] PHP ERROR LOG INIT
+[19-May-2026 07:52:34 UTC] PHP Deprecated:  Return type of IgnorantRecursiveDirectoryIterator::getChildren() should either be compatible with RecursiveDirectoryIterator::getChildren(): RecursiveDirectoryIterator, or the #[\ReturnTypeWillChange] attribute should be used to temporarily suppress the notice in /var/www/html/dup-installer/classes/utilities/class.ignorant.recursive.iterator.php on line 15
+[19-May-2026 07:52:34 UTC] PHP Warning:  The magic method DUPX_NOTICE_MANAGER::__wakeup() must have public visibility in /var/www/html/dup-installer/classes/utilities/class.u.notices.manager.php on line 1047
+[19-May-2026 07:52:34 UTC] PHP Warning:  The magic method DUPX_Orig_File_Manager::__wakeup() must have public visibility in /var/www/html/dup-installer/classes/utilities/class.u.orig.files.manager.php on line 295
+[19-May-2026 07:52:34 UTC] PHP Warning:  The magic method DUPX_Paramas_Manager::__wakeup() must have public visibility in /var/www/html/dup-installer/classes/utilities/params/class.u.params.manager.php on line 784
+[19-May-2026 07:52:34 UTC] PHP Warning:  The magic method DUPX_Plugins_Manager::__wakeup() must have public visibility in /var/www/html/dup-installer/classes/plugins/class.plugins.manager.php on line 450
+[19-May-2026 07:52:34 UTC] PHP Deprecated:  Optional parameter $headers declared before required parameter $method is implicitly treated as a required parameter in /var/www/html/dup-installer/classes/class.http.php on line 179

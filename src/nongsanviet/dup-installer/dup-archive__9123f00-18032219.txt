@@ -1,0 +1,678 @@
+{
+    "created": "2023-08-18 03:22:19",
+    "version_dup": "3.8.7",
+    "version_wp": "6.3",
+    "version_db": "10.0.32",
+    "version_php": "7.1.9",
+    "version_os": "Linux",
+    "dbInfo": {
+        "buildMode": "PHP",
+        "charSetList": [
+            "utf8mb4",
+            "latin1"
+        ],
+        "collationList": [
+            "utf8mb4_unicode_520_ci",
+            "utf8mb4_unicode_ci",
+            "latin1_swedish_ci"
+        ],
+        "isTablesUpperCase": 0,
+        "isNameUpperCase": 0,
+        "name": "dienmayxanh",
+        "tablesBaseCount": 50,
+        "tablesFinalCount": 50,
+        "tablesRowCount": 6713,
+        "tablesSizeOnDisk": 7503872,
+        "tablesList": {
+            "wp_actionscheduler_actions": {
+                "rows": "1",
+                "size": 131072
+            },
+            "wp_actionscheduler_claims": {
+                "rows": "0",
+                "size": 32768
+            },
+            "wp_actionscheduler_groups": {
+                "rows": "1",
+                "size": 32768
+            },
+            "wp_actionscheduler_logs": {
+                "rows": "3",
+                "size": 49152
+            },
+            "wp_commentmeta": {
+                "rows": "2",
+                "size": 49152
+            },
+            "wp_comments": {
+                "rows": "18",
+                "size": 114688
+            },
+            "wp_duplicator_pro_entities": {
+                "rows": "5",
+                "size": 32768
+            },
+            "wp_duplicator_pro_packages": {
+                "rows": "0",
+                "size": 32768
+            },
+            "wp_links": {
+                "rows": "0",
+                "size": 32768
+            },
+            "wp_options": {
+                "rows": "899",
+                "size": 1638400
+            },
+            "wp_postmeta": {
+                "rows": "3,013",
+                "size": 720896
+            },
+            "wp_posts": {
+                "rows": "856",
+                "size": 2768896
+            },
+            "wp_social_users": {
+                "rows": "0",
+                "size": 32768
+            },
+            "wp_term_relationships": {
+                "rows": "125",
+                "size": 32768
+            },
+            "wp_term_taxonomy": {
+                "rows": "58",
+                "size": 49152
+            },
+            "wp_termmeta": {
+                "rows": "71",
+                "size": 49152
+            },
+            "wp_terms": {
+                "rows": "56",
+                "size": 49152
+            },
+            "wp_tp_image_optimizer": {
+                "rows": "885",
+                "size": 98304
+            },
+            "wp_usermeta": {
+                "rows": "232",
+                "size": 81920
+            },
+            "wp_users": {
+                "rows": "2",
+                "size": 65536
+            },
+            "wp_wc_admin_note_actions": {
+                "rows": "94",
+                "size": 81920
+            },
+            "wp_wc_admin_notes": {
+                "rows": "64",
+                "size": 65536
+            },
+            "wp_wc_category_lookup": {
+                "rows": "45",
+                "size": 16384
+            },
+            "wp_wc_customer_lookup": {
+                "rows": "0",
+                "size": 49152
+            },
+            "wp_wc_download_log": {
+                "rows": "0",
+                "size": 49152
+            },
+            "wp_wc_order_coupon_lookup": {
+                "rows": "0",
+                "size": 49152
+            },
+            "wp_wc_order_product_lookup": {
+                "rows": "0",
+                "size": 81920
+            },
+            "wp_wc_order_stats": {
+                "rows": "0",
+                "size": 65536
+            },
+            "wp_wc_order_tax_lookup": {
+                "rows": "0",
+                "size": 49152
+            },
+            "wp_wc_product_attributes_lookup": {
+                "rows": "0",
+                "size": 49152
+            },
+            "wp_wc_product_meta_lookup": {
+                "rows": "29",
+                "size": 114688
+            },
+            "wp_wc_rate_limits": {
+                "rows": "0",
+                "size": 32768
+            },
+            "wp_wc_reserved_stock": {
+                "rows": "0",
+                "size": 16384
+            },
+            "wp_wc_tax_rate_classes": {
+                "rows": "2",
+                "size": 32768
+            },
+            "wp_wc_webhooks": {
+                "rows": "0",
+                "size": 32768
+            },
+            "wp_woocommerce_api_keys": {
+                "rows": "0",
+                "size": 49152
+            },
+            "wp_woocommerce_attribute_taxonomies": {
+                "rows": "0",
+                "size": 32768
+            },
+            "wp_woocommerce_downloadable_product_permissions": {
+                "rows": "0",
+                "size": 65536
+            },
+            "wp_woocommerce_log": {
+                "rows": "0",
+                "size": 32768
+            },
+            "wp_woocommerce_order_itemmeta": {
+                "rows": "226",
+                "size": 49152
+            },
+            "wp_woocommerce_order_items": {
+                "rows": "26",
+                "size": 32768
+            },
+            "wp_woocommerce_payment_tokenmeta": {
+                "rows": "0",
+                "size": 49152
+            },
+            "wp_woocommerce_payment_tokens": {
+                "rows": "0",
+                "size": 32768
+            },
+            "wp_woocommerce_sessions": {
+                "rows": "0",
+                "size": 32768
+            },
+            "wp_woocommerce_shipping_zone_locations": {
+                "rows": "0",
+                "size": 49152
+            },
+            "wp_woocommerce_shipping_zone_methods": {
+                "rows": "0",
+                "size": 16384
+            },
+            "wp_woocommerce_shipping_zones": {
+                "rows": "0",
+                "size": 16384
+            },
+            "wp_woocommerce_tax_rate_locations": {
+                "rows": "0",
+                "size": 49152
+            },
+            "wp_woocommerce_tax_rates": {
+                "rows": "0",
+                "size": 81920
+            },
+            "wp_woof_query_cache": {
+                "rows": "0",
+                "size": 32768
+            }
+        },
+        "varLowerCaseTables": "0",
+        "version": "10.0.32",
+        "versionComment": "MariaDB Server",
+        "tableWiseRowCounts": {
+            "wp_actionscheduler_actions": "1",
+            "wp_actionscheduler_groups": "1",
+            "wp_actionscheduler_logs": "3",
+            "wp_commentmeta": "2",
+            "wp_comments": "36",
+            "wp_duplicator_pro_entities": "5",
+            "wp_duplicator_pro_packages": "1",
+            "wp_options": "911",
+            "wp_postmeta": "3468",
+            "wp_posts": "652",
+            "wp_term_relationships": "118",
+            "wp_term_taxonomy": "58",
+            "wp_termmeta": "71",
+            "wp_terms": "58",
+            "wp_tp_image_optimizer": "885",
+            "wp_usermeta": "257",
+            "wp_users": "7",
+            "wp_wc_admin_note_actions": "94",
+            "wp_wc_admin_notes": "64",
+            "wp_wc_category_lookup": "45",
+            "wp_wc_product_meta_lookup": "29",
+            "wp_wc_tax_rate_classes": "2",
+            "wp_woocommerce_order_itemmeta": "406",
+            "wp_woocommerce_order_items": "46",
+            "wp_woocommerce_sessions": "1"
+        }
+    },
+    "opts_delete": "[\"duplicator_pro_ui_view_state\",\"duplicator_pro_package_active\",\"duplicator_pro_settings\"]",
+    "blogname": "\u0110i\u1ec7n m\u00e1y xanh - M\u1eabu web \u0111i\u1ec7n m\u00e1y xanh",
+    "wproot": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html",
+    "wplogin_url": "http:\/\/dienmayxanh.giaodienwebmau.com\/wp-login.php",
+    "relative_content_dir": "wp-content",
+    "relative_plugins_dir": "wp-content\/plugins",
+    "relative_theme_dirs": [
+        "wp-content\/themes"
+    ],
+    "exportOnlyDB": 0,
+    "secure_on": 0,
+    "secure_pass": "$2a$08$iLAFJn1lkkn.5sTgox.rX.F.gfSm9svZa67axuEZSVZGdWsewGyPi",
+    "skipscan": 0,
+    "dbhost": "",
+    "dbname": "",
+    "dbuser": "",
+    "dbpass": "",
+    "cache_wp": null,
+    "cache_path": null,
+    "cpnl_dbname": "",
+    "cpnl_host": "",
+    "cpnl_user": "",
+    "cpnl_pass": "",
+    "cpnl_enable": 0,
+    "cpnl_connect": false,
+    "cpnl_dbaction": "create",
+    "cpnl_dbhost": "",
+    "cpnl_dbuser": "",
+    "wp_tableprefix": "wp_",
+    "mu_mode": 0,
+    "mu_generation": 0,
+    "subsites": [],
+    "main_site_id": 1,
+    "mu_is_filtered": false,
+    "license_limit": -1,
+    "brand": {
+        "logo": "<i class=\"fa fa-bolt fa-sm\"><\/i> Duplicator Pro",
+        "enabled": false,
+        "style": []
+    },
+    "is_outer_root_wp_config_file": false,
+    "is_outer_root_wp_content_dir": null,
+    "wp_content_dir_base_name": "",
+    "wpInfo": {
+        "version": "6.3",
+        "is_multisite": false,
+        "network_id": 1,
+        "targetRoot": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html",
+        "targetPaths": [
+            "\/home\/dienmayxanh.giaodienwebmau.com\/public_html"
+        ],
+        "configs": {
+            "defines": {
+                "ABSPATH": {
+                    "value": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html\/",
+                    "inWpConfig": true
+                },
+                "DB_CHARSET": {
+                    "value": "utf8mb4",
+                    "inWpConfig": true
+                },
+                "DB_COLLATE": {
+                    "value": "",
+                    "inWpConfig": true
+                },
+                "AUTH_KEY": {
+                    "value": "]q|;2Pq<s[YD s|oXP6W|=@QKRBMHuL}ro}N tWvat@Z[x8;6)XR%7_.j\/<if*eR",
+                    "inWpConfig": true
+                },
+                "SECURE_AUTH_KEY": {
+                    "value": "rv#Lyy~(a0I;:?\/LwCYU5eS<KBub KEGDB|dP5=iF<0b`mU9Vb15nS8cd4!]$p2G",
+                    "inWpConfig": true
+                },
+                "LOGGED_IN_KEY": {
+                    "value": "o@YW)n6Xj!)zr5TRwEaiE@dVr`1A6:<tl\/lN8m(L>LXsh%C>!p\/QjFbEQ tZB<uM",
+                    "inWpConfig": true
+                },
+                "NONCE_KEY": {
+                    "value": "PMS9U8&!itWfnq.>zfEGnvm,>6:xBnXSEWPr]G6k^E`D@LAi\/z#y#Q)M(*167:xa",
+                    "inWpConfig": true
+                },
+                "AUTH_SALT": {
+                    "value": "_czqD,_NIc3sQKTV+nl85lf. Du6<rHxiTf}a#B2`C?XET\/AWM*bk[Gp6C6DA7oc",
+                    "inWpConfig": true
+                },
+                "SECURE_AUTH_SALT": {
+                    "value": "=E\/$?-yUanPT~HIrVkK[;mZChZlsX G0G;N1h2u*ne16yWL2>O`)]-TtqmU@W0ns",
+                    "inWpConfig": true
+                },
+                "LOGGED_IN_SALT": {
+                    "value": "6j&{a%597<knvPTQV_sC^GhfBawO3%@kr?qm,m+d9Cg5L`Qpyhsk(8&$gY\/&PE\/ ",
+                    "inWpConfig": true
+                },
+                "NONCE_SALT": {
+                    "value": "[2(~ayM;Xi94g9J0,#`;6>$ APsCOj)hOtvv#orkQ e}A?cZO-9$XUWGsU^k`}b(",
+                    "inWpConfig": true
+                },
+                "WP_CONTENT_DIR": {
+                    "value": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html\/wp-content",
+                    "inWpConfig": false
+                },
+                "WP_CONTENT_URL": {
+                    "value": "http:\/\/dienmayxanh.giaodienwebmau.com\/wp-content",
+                    "inWpConfig": false
+                },
+                "WP_PLUGIN_DIR": {
+                    "value": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html\/wp-content\/plugins",
+                    "inWpConfig": false
+                },
+                "WP_PLUGIN_URL": {
+                    "value": "http:\/\/dienmayxanh.giaodienwebmau.com\/wp-content\/plugins",
+                    "inWpConfig": false
+                },
+                "PLUGINDIR": {
+                    "value": "wp-content\/plugins",
+                    "inWpConfig": false
+                },
+                "AUTOSAVE_INTERVAL": {
+                    "value": 60,
+                    "inWpConfig": false
+                },
+                "WP_POST_REVISIONS": {
+                    "value": true,
+                    "inWpConfig": false
+                },
+                "COOKIE_DOMAIN": {
+                    "value": false,
+                    "inWpConfig": false
+                },
+                "WP_DEBUG": {
+                    "value": false,
+                    "inWpConfig": true
+                },
+                "SCRIPT_DEBUG": {
+                    "value": false,
+                    "inWpConfig": false
+                },
+                "WP_DEBUG_LOG": {
+                    "value": false,
+                    "inWpConfig": false
+                },
+                "WP_DEBUG_DISPLAY": {
+                    "value": true,
+                    "inWpConfig": false
+                },
+                "WP_MEMORY_LIMIT": {
+                    "value": "40M",
+                    "inWpConfig": false
+                },
+                "WP_MAX_MEMORY_LIMIT": {
+                    "value": "256M",
+                    "inWpConfig": false
+                },
+                "WP_CACHE": {
+                    "value": false,
+                    "inWpConfig": true
+                },
+                "WP_LANG_DIR": {
+                    "value": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html\/wp-content\/languages",
+                    "inWpConfig": false
+                },
+                "WP_CRON_LOCK_TIMEOUT": {
+                    "value": 60,
+                    "inWpConfig": false
+                },
+                "COOKIEPATH": {
+                    "value": "\/",
+                    "inWpConfig": false
+                },
+                "SITECOOKIEPATH": {
+                    "value": "\/",
+                    "inWpConfig": false
+                },
+                "ADMIN_COOKIE_PATH": {
+                    "value": "\/wp-admin",
+                    "inWpConfig": false
+                },
+                "PLUGINS_COOKIE_PATH": {
+                    "value": "\/wp-content\/plugins",
+                    "inWpConfig": false
+                },
+                "TEMPLATEPATH": {
+                    "value": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html\/wp-content\/themes\/flatsome",
+                    "inWpConfig": false
+                },
+                "STYLESHEETPATH": {
+                    "value": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html\/wp-content\/themes\/web-khoi-nghiep",
+                    "inWpConfig": false
+                },
+                "EMPTY_TRASH_DAYS": {
+                    "value": 30,
+                    "inWpConfig": false
+                },
+                "FORCE_SSL_ADMIN": {
+                    "value": false,
+                    "inWpConfig": false
+                },
+                "WPMU_PLUGIN_DIR": {
+                    "value": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html\/wp-content\/mu-plugins",
+                    "inWpConfig": false
+                },
+                "WPMU_PLUGIN_URL": {
+                    "value": "http:\/\/dienmayxanh.giaodienwebmau.com\/wp-content\/mu-plugins",
+                    "inWpConfig": false
+                },
+                "MUPLUGINDIR": {
+                    "value": "wp-content\/mu-plugins",
+                    "inWpConfig": false
+                }
+            },
+            "realValues": {
+                "siteUrl": "http:\/\/dienmayxanh.giaodienwebmau.com",
+                "homeUrl": "http:\/\/dienmayxanh.giaodienwebmau.com",
+                "contentUrl": "http:\/\/dienmayxanh.giaodienwebmau.com\/wp-content",
+                "uploadBaseUrl": "http:\/\/dienmayxanh.giaodienwebmau.com\/wp-content\/uploads",
+                "pluginsUrl": "http:\/\/dienmayxanh.giaodienwebmau.com\/wp-content\/plugins",
+                "mupluginsUrl": "http:\/\/dienmayxanh.giaodienwebmau.com\/wp-content\/mu-plugins",
+                "themesUrl": "http:\/\/dienmayxanh.giaodienwebmau.com\/wp-content\/themes",
+                "originalPaths": {
+                    "home": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html",
+                    "abs": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html",
+                    "wpconfig": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html",
+                    "wpcontent": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html\/wp-content",
+                    "uploads": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html\/wp-content\/uploads",
+                    "plugins": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html\/wp-content\/plugins",
+                    "muplugins": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html\/wp-content\/mu-plugins",
+                    "themes": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html\/wp-content\/themes"
+                },
+                "archivePaths": {
+                    "home": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html",
+                    "abs": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html",
+                    "wpconfig": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html",
+                    "wpcontent": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html\/wp-content",
+                    "uploads": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html\/wp-content\/uploads",
+                    "plugins": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html\/wp-content\/plugins",
+                    "muplugins": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html\/wp-content\/mu-plugins",
+                    "themes": "\/home\/dienmayxanh.giaodienwebmau.com\/public_html\/wp-content\/themes"
+                }
+            }
+        },
+        "plugins": {
+            "contact-form-7\/wp-contact-form-7.php": {
+                "slug": "contact-form-7\/wp-contact-form-7.php",
+                "name": "Contact Form 7",
+                "version": "5.0.1",
+                "pluginURI": "https:\/\/contactform7.com\/",
+                "author": "Takayuki Miyoshi",
+                "authorURI": "https:\/\/ideasilo.wordpress.com\/",
+                "description": "Just another contact form plugin. Simple but flexible.",
+                "title": "Contact Form 7",
+                "networkActive": false,
+                "active": true,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "devvn-quick-buy\/devvn-quick-buy.php": {
+                "slug": "devvn-quick-buy\/devvn-quick-buy.php",
+                "name": "DevVN - Quick Buy - Mua H\u00e0ng Nhanh",
+                "version": "1.1.2",
+                "pluginURI": "http:\/\/levantoan.com\/san-pham\/plugin-mua-hang-nhanh-cho-woocommerce-woocommerce-quick-buy\/",
+                "author": "Le Van Toan",
+                "authorURI": "http:\/\/levantoan.com",
+                "description": "DevVN Quick Buy l\u00e0 plugin gi\u00fap kh\u00e1ch h\u00e0ng c\u00f3 th\u1ec3 mua nhanh s\u1ea3n ph\u1ea9m ngay t\u1ea1i trang chi ti\u1ebft d\u01b0\u1edbi d\u1ea1ng popup",
+                "title": "DevVN - Quick Buy - Mua H\u00e0ng Nhanh",
+                "networkActive": false,
+                "active": true,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "duplicator-pro\/duplicator-pro.php": {
+                "slug": "duplicator-pro\/duplicator-pro.php",
+                "name": "Duplicator Pro",
+                "version": "3.8.7",
+                "pluginURI": "http:\/\/snapcreek.com\/",
+                "author": "Snap Creek",
+                "authorURI": "http:\/\/snapcreek.com",
+                "description": "Create, schedule and transfer a copy of your WordPress files and database. Duplicate and move a site from one location to another quickly.",
+                "title": "Duplicator Pro",
+                "networkActive": false,
+                "active": true,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "ot-flatsome-vertical-menu\/ot-flatsome-vertical-menu.php": {
+                "slug": "ot-flatsome-vertical-menu\/ot-flatsome-vertical-menu.php",
+                "name": "OT Flatsome Vertical Menu",
+                "version": "1.2.3",
+                "pluginURI": "https:\/\/thinhdev.com\/plugins\/ot-flatsome-vertical-menu",
+                "author": "Thinhbg59",
+                "authorURI": "https:\/\/thinhdev.com",
+                "description": "Vertical Menu for Flatsome theme by thinhbg59@gmail.com",
+                "title": "OT Flatsome Vertical Menu",
+                "networkActive": false,
+                "active": true,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "regenerate-thumbnails\/regenerate-thumbnails.php": {
+                "slug": "regenerate-thumbnails\/regenerate-thumbnails.php",
+                "name": "Regenerate Thumbnails",
+                "version": "3.1.6",
+                "pluginURI": "https:\/\/alex.blog\/wordpress-plugins\/regenerate-thumbnails\/",
+                "author": "Alex Mills (Viper007Bond)",
+                "authorURI": "https:\/\/alex.blog\/",
+                "description": "Regenerate the thumbnails for one or more of your image uploads. Useful when changing their sizes or your theme.",
+                "title": "Regenerate Thumbnails",
+                "networkActive": false,
+                "active": true,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "wck-custom-fields-and-custom-post-types-creator\/wck.php": {
+                "slug": "wck-custom-fields-and-custom-post-types-creator\/wck.php",
+                "name": "WCK - Custom Fields and Custom Post Types Creator",
+                "version": "2.1.9",
+                "pluginURI": "",
+                "author": "Cozmoslabs, Madalin Ungureanu, Cristian Antohe",
+                "authorURI": "http:\/\/www.cozmoslabs.com",
+                "description": "WordPress Creation Kit consists of three tools that can help you create and maintain custom post types, custom taxonomies and most importantly, custom fields and metaboxes for your posts, pages or CPT's.",
+                "title": "WCK - Custom Fields and Custom Post Types Creator",
+                "networkActive": false,
+                "active": true,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "woocommerce\/woocommerce.php": {
+                "slug": "woocommerce\/woocommerce.php",
+                "name": "WooCommerce",
+                "version": "6.3.1",
+                "pluginURI": "https:\/\/woocommerce.com\/",
+                "author": "Automattic",
+                "authorURI": "https:\/\/woocommerce.com",
+                "description": "An eCommerce toolkit that helps you sell anything. Beautifully.",
+                "title": "WooCommerce",
+                "networkActive": false,
+                "active": true,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "woocommerce-products-filter\/index.php": {
+                "slug": "woocommerce-products-filter\/index.php",
+                "name": "WOOF - WooCommerce Products Filter",
+                "version": "2.1.7",
+                "pluginURI": "http:\/\/woocommerce-filter.com\/",
+                "author": "realmag777",
+                "authorURI": "https:\/\/pluginus.net\/",
+                "description": "WOOF - WooCommerce Products Filter. Flexible, easy and robust products filter for WooCommerce store site!",
+                "title": "WOOF - WooCommerce Products Filter",
+                "networkActive": false,
+                "active": false,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "woosidebars\/woosidebars.php": {
+                "slug": "woosidebars\/woosidebars.php",
+                "name": "WooSidebars",
+                "version": "1.4.6",
+                "pluginURI": "http:\/\/woocommerce.com\/woosidebars\/",
+                "author": "WooCommerce",
+                "authorURI": "http:\/\/woocommerce.com\/",
+                "description": "Replace widget areas in your theme for specific pages, archives and other sections of WordPress.",
+                "title": "WooSidebars",
+                "networkActive": false,
+                "active": true,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "wp-mail-smtp\/wp_mail_smtp.php": {
+                "slug": "wp-mail-smtp\/wp_mail_smtp.php",
+                "name": "WP-Mail-SMTP",
+                "version": "0.10.1",
+                "pluginURI": "http:\/\/www.callum-macdonald.com\/code\/wp-mail-smtp\/",
+                "author": "Callum Macdonald",
+                "authorURI": "http:\/\/www.callum-macdonald.com\/",
+                "description": "Reconfigures the wp_mail() function to use SMTP instead of mail() and creates an options page to manage the settings.",
+                "title": "WP-Mail-SMTP",
+                "networkActive": false,
+                "active": true,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "wordpress-seo\/wp-seo.php": {
+                "slug": "wordpress-seo\/wp-seo.php",
+                "name": "Yoast SEO",
+                "version": "4.7.1",
+                "pluginURI": "https:\/\/yoast.com\/wordpress\/plugins\/seo\/#utm_source=wpadmin&utm_medium=plugin&utm_campaign=wpseoplugin",
+                "author": "Team Yoast",
+                "authorURI": "https:\/\/yoast.com\/",
+                "description": "The first true all-in-one SEO solution for WordPress, including on-page content analysis, XML sitemaps and much more.",
+                "title": "Yoast SEO",
+                "networkActive": false,
+                "active": true,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "advanced-cache.php": {
+                "slug": "advanced-cache.php",
+                "name": "advanced-cache.php",
+                "version": "",
+                "pluginURI": "",
+                "author": "",
+                "authorURI": "",
+                "description": "",
+                "title": "",
+                "networkActive": false,
+                "active": false,
+                "mustUse": false,
+                "dropIns": true
+            }
+        }
+    },
+    "installer_base_name": "installer.php",
+    "package_name": "20230818_dienmayxanhmauwebdienmay_9123f00451d228c27048_20230818032219_archive.daf",
+    "package_hash": "9123f00-18032219",
+    "package_notes": "",
+    "mu_siteadmins": [
+        "admin"
+    ],
+    "overwriteInstallerParams": []
+}

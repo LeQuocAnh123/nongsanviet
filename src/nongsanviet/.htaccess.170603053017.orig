@@ -1,0 +1,25 @@
+# BEGIN REMOVE SLUG CUSTOM POST TYPE RULES
+RewriteRule ^blocks/(.+)/$ /$1 [R=301,L]
+RewriteRule ^product/(.+)/$ /$1 [R=301,L]
+RewriteRule ^product_variation/(.+)/$ /$1 [R=301,L]
+RewriteRule ^/(.+)/$ /$1 [R=301,L]
+RewriteRule ^shop_order_refund/(.+)/$ /$1 [R=301,L]
+RewriteRule ^/(.+)/$ /$1 [R=301,L]
+RewriteRule ^/(.+)/$ /$1 [R=301,L]
+RewriteRule ^/(.+)/$ /$1 [R=301,L]
+RewriteRule ^featured_item/(.+)/$ /$1 [R=301,L]
+RewriteRule ^sidebar/(.+)/$ /$1 [R=301,L]
+# END REMOVE SLUG CUSTOM POST TYPE RULES
+
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /mau3/
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /mau3/index.php [L]
+</IfModule>
+
+# END WordPress

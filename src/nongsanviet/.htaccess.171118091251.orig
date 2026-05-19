@@ -1,0 +1,6 @@
+# BEGIN REMOVE SLUG CUSTOM POST TYPE RULES
+RewriteRule ^blocks/(.+)/\$ /\$1 [R=301,L]
+RewriteRule ^product/(.+)/\$ /\$1 [R=301,L]
+RewriteRule ^product_variation/(.+)/\$ /\$1 [R=301,L]
+RewriteRule ^/(.+)/\$ /\$1 [R=301,L]
+RewriteRule 

@@ -1,0 +1,10 @@
+[May 19 07:45:37] 
+[May 19 07:45:37] [PHP ERR][ISSUE] MSG:Constant FILTER_SANITIZE_STRING is deprecated [CODE:8192|FILE:/var/www/html/installer.php|LINE:122]
+[May 19 07:45:37] [PHP ERR][ISSUE] MSG:Creation of dynamic property DUPX_Bootstrap::$extractionTmpFolder is deprecated [CODE:8192|FILE:/var/www/html/installer.php|LINE:134]
+[May 19 07:45:37] [PHP ERR][WARN] MSG:filesize(): stat failed for 20201001_taphoaonline_b416940fe0def8c34977_20201001043446_archive.zip [CODE:2|FILE:/var/www/html/installer.php|LINE:141]
+[May 19 07:45:37] ==DUPLICATOR INSTALLER BOOTSTRAP v3.8.7==
+[May 19 07:45:37] ----------------------------------------------------
+[May 19 07:45:37] Installer bootstrap start
+[May 19 07:45:37] Using archive /var/www/html/20201001_taphoaonline_b416940fe0def8c34977_20201001043446_archive.zip
+[May 19 07:45:37] [ERROR] Archive file not found!
+[May 19 07:45:37] [PHP ERR][WARN] MSG:filesize(): stat failed for 20201001_taphoaonline_b416940fe0def8c34977_20201001043446_archive.zip [CODE:2|FILE:/var/www/html/installer.php|LINE:141]

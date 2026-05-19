@@ -1,0 +1,10 @@
+
+EXCEPTION ON INIT:  CSRF FILE NOT FOUND
+Please, check webroot file permsission and dup-installer folder permission
+	FILE:/var/www/html/dup-installer/classes/config/class.security.php[72]
+	TRACE:
+#0 /var/www/html/dup-installer/classes/config/class.security.php(61): DUPX_Security->__construct()
+#1 /var/www/html/dup-installer/classes/config/class.boot.php(63): DUPX_Security::getInstance()
+#2 /var/www/html/dup-installer/main.installer.php(46): DUPX_Boot::init()
+#3 {main}
+

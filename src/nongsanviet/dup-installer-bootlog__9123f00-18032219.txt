@@ -1,0 +1,33 @@
+[May 19 07:54:10] 
+[May 19 07:54:10] [PHP ERR][ISSUE] MSG:Constant FILTER_SANITIZE_STRING is deprecated [CODE:8192|FILE:/var/www/html/installer.php|LINE:122]
+[May 19 07:54:10] [PHP ERR][ISSUE] MSG:Creation of dynamic property DUPX_Bootstrap::$extractionTmpFolder is deprecated [CODE:8192|FILE:/var/www/html/installer.php|LINE:134]
+[May 19 07:54:10] ==DUPLICATOR INSTALLER BOOTSTRAP v3.8.7==
+[May 19 07:54:10] ----------------------------------------------------
+[May 19 07:54:10] Installer bootstrap start
+[May 19 07:54:10] Using archive /var/www/html/20230818_dienmayxanhmauwebdienmay_9123f00451d228c27048_20230818032219_archive.daf
+[May 19 07:54:10] Manual extract found so not going to extract dup-installer dir
+[May 19 07:54:10] EXTRACT dup-installer dir
+[May 19 07:54:10] ERROR: Didn't need to extract the installer.
+[May 19 07:54:10] [PHP ERR][ISSUE] MSG:Creation of dynamic property DUPX_Bootstrap::$archive is deprecated [CODE:8192|FILE:/var/www/html/installer.php|LINE:602]
+[May 19 07:54:10] [PHP ERR][ISSUE] MSG:Creation of dynamic property DUPX_Bootstrap::$bootloader is deprecated [CODE:8192|FILE:/var/www/html/installer.php|LINE:603]
+[May 19 07:54:10] Set permissions of dup-installer to u+rwx<br/>
+[May 19 07:54:10] Set permissions of dup-installer/api to u+rwx<br/>
+[May 19 07:54:10] Set permissions of dup-installer/assets to u+rwx<br/>
+[May 19 07:54:10] Set permissions of dup-installer/classes to u+rwx<br/>
+[May 19 07:54:10] Set permissions of dup-installer/ctrls to u+rwx<br/>
+[May 19 07:54:10] Set permissions of dup-installer/favicon to u+rwx<br/>
+[May 19 07:54:10] Set permissions of dup-installer/lib to u+rwx<br/>
+[May 19 07:54:10] Set permissions of dup-installer/views to u+rwx<br/>
+[May 19 07:54:10] Set permissions of dup-installer/dup-archive__9123f00-18032219.txt to u+rw<br/>
+[May 19 07:54:10] Set permissions of dup-installer/dup-database__9123f00-18032219.sql to u+rw<br/>
+[May 19 07:54:10] Set permissions of dup-installer/dup-installer-log__9123f00-18032219.txt to u+rw<br/>
+[May 19 07:54:10] Set permissions of dup-installer/dup-scan__9123f00-18032219.json to u+rw<br/>
+[May 19 07:54:10] Set permissions of dup-installer/dup-scanned-dirs__9123f00-18032219.txt to u+rw<br/>
+[May 19 07:54:10] Set permissions of dup-installer/dup-scanned-files__9123f00-18032219.txt to u+rw<br/>
+[May 19 07:54:10] Set permissions of dup-installer/index.php to u+rw<br/>
+[May 19 07:54:10] Set permissions of dup-installer/main.installer.php to u+rw<br/>
+[May 19 07:54:10] Set permissions of dup-installer/php_error__9123f00-18032219.log to u+rw<br/>
+[May 19 07:54:10] DONE: No detected errors so redirecting to the main installer. Main Installer URI = http://localhost:8080/dup-installer/main.installer.php
+[May 19 07:54:10] [PHP ERR][ISSUE] MSG:Implicit conversion from float 7729.049999999999 to int loses precision [CODE:8192|FILE:/var/www/html/installer.php|LINE:1612]
+[May 19 07:54:10] [PHP ERR][ISSUE] MSG:Implicit conversion from float 7785.4800000000005 to int loses precision [CODE:8192|FILE:/var/www/html/installer.php|LINE:1612]
+[May 19 07:54:10] [PHP ERR][ISSUE] MSG:Creation of dynamic property DUPX_Bootstrap::$extractionTmpFolder is deprecated [CODE:8192|FILE:/var/www/html/installer.php|LINE:134]
