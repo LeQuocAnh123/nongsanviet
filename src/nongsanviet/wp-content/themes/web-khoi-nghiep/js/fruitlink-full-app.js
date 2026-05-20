@@ -1,0 +1,898 @@
+const {useState,useEffect,useRef}=React;
+const G={
+  g50:"#f0faf0",g100:"#d4f0d4",g200:"#a5d6a7",g400:"#4caf50",g500:"#388e3c",g600:"#2e7d32",g700:"#1b5e20",
+  a400:"#ffb300",a500:"#f57c00",
+  t400:"#26a69a",t500:"#00796b",t600:"#00695c",
+  gy50:"#fafaf8",gy100:"#f2f0eb",gy200:"#e0ddd6",gy400:"#9e9c94",gy600:"#5c5a54",gy800:"#2c2c2a",
+  w:"#ffffff",r500:"#e53935",b500:"#1976d2",
+};
+const serif="Georgia,serif";
+const sans="system-ui,sans-serif";
+
+const PRODUCTS=[
+  {id:1,name:"Xoài Cát Hoà Lộc",region:"Tiền Giang",emoji:"🥭",price:450000,harvest:"Tháng 5/2025",funded:78,slots:20,left:4,tags:["Trái cây","Đặc sản"],farmer:"Nguyễn Minh Tuấn"},
+  {id:2,name:"Thanh Long Ruột Đỏ",region:"Bình Thuận",emoji:"🍈",price:320000,harvest:"Tháng 6/2025",funded:55,slots:30,left:13,tags:["Trái cây"],farmer:"Trần Văn Hùng"},
+  {id:3,name:"Sầu Riêng Monthong",region:"Tiền Giang",emoji:"🍑",price:890000,harvest:"Tháng 7/2025",funded:90,slots:15,left:1,tags:["Trái cây","Hot"],farmer:"Lê Thị Mai"},
+  {id:4,name:"Bưởi Da Xanh",region:"Bến Tre",emoji:"🍋",price:280000,harvest:"Tháng 8/2025",funded:42,slots:25,left:14,tags:["Trái cây"],farmer:"Phạm Văn Nam"},
+  {id:5,name:"Rau Sạch VietGAP",region:"Đà Lạt",emoji:"🥦",price:180000,harvest:"Hàng tháng",funded:65,slots:50,left:17,tags:["Rau củ"],farmer:"Hoàng Thị Lan"},
+  {id:6,name:"Gạo ST25 Hữu Cơ",region:"Sóc Trăng",emoji:"🌾",price:520000,harvest:"Tháng 9/2025",funded:33,slots:40,left:26,tags:["Lương thực","Đặc sản"],farmer:"Võ Minh Khoa"},
+];
+const TOURS=[
+  {id:1,name:"Thu hoạch Xoài Hoà Lộc",region:"Tiền Giang",emoji:"🥭",date:"15–17/5/2025",price:850000,slots:12},
+  {id:2,name:"Ngày hội Sầu Riêng",region:"Tiền Giang",emoji:"🍑",date:"20–22/6/2025",price:1200000,slots:8},
+  {id:3,name:"Trải nghiệm ruộng lúa ST25",region:"Sóc Trăng",emoji:"🌾",date:"10–12/9/2025",price:990000,slots:15},
+];
+
+const DEMO_USERS={
+  "admin@fruitlink.local":{pass:"Admin@FruitLink2026",user:{name:"FruitLink Admin",email:"admin@fruitlink.local",rank:"Quản trị viên 🛡️",points:9999,investments:0,role:"admin"},page:"admin"},
+  "farmer@fruitlink.local":{pass:"Farmer@FruitLink2026",user:{name:"Nguyễn Minh Tuấn",email:"farmer@fruitlink.local",rank:"Nông dân đối tác 🧑‍🌾",points:760,investments:2,role:"farmer"},page:"farmer"},
+  "investor@fruitlink.local":{pass:"Investor@FruitLink2026",user:{name:"Nguyễn Văn A",email:"investor@fruitlink.local",rank:"Canh nông 🌿",points:480,investments:2,role:"investor"},page:"profile"}
+};
+
+const FARMER_PRODUCTS=[
+  {id:1,name:"Xoài Cát Hoà Lộc",emoji:"🥭",funded:78,investors:12,harvest:"15/5/2025",status:"Đang canh tác",income:5400000},
+  {id:3,name:"Sầu Riêng Monthong",emoji:"🍑",funded:90,investors:14,harvest:"20/7/2025",status:"Ra hoa",income:12460000},
+];
+
+const btn=(bg,co,extra={})=>({display:"inline-flex",alignItems:"center",justifyContent:"center",gap:6,padding:"9px 18px",borderRadius:9,fontSize:13,fontWeight:500,cursor:"pointer",border:"none",background:bg,color:co,fontFamily:sans,...extra});
+const card={background:G.w,border:`0.5px solid ${G.gy200}`,borderRadius:14,overflow:"hidden"};
+const input={width:"100%",padding:"10px 13px",border:`1px solid ${G.gy200}`,borderRadius:9,fontSize:14,fontFamily:sans,outline:"none",background:G.w,color:G.gy800};
+const badge=(bg,co)=>({display:"inline-block",padding:"3px 9px",borderRadius:20,fontSize:11,fontWeight:500,background:bg,color:co});
+
+function Navbar({page,setPage,user,setUser}){
+  const pages=[["home","🏠"],["explore","🌿 Khám phá"],["invest","💰 Đầu tư"],["track","📊 Theo dõi"],["tour","🎪 Du lịch"]];
+  return React.createElement("nav",{style:{background:G.w,borderBottom:`1px solid ${G.gy200}`,padding:"0 16px",display:"flex",alignItems:"center",justifyContent:"space-between",height:54,position:"sticky",top:0,zIndex:100,gap:8}},
+    React.createElement("div",{style:{fontFamily:serif,fontSize:19,color:G.g600,cursor:"pointer",fontWeight:700},onClick:()=>setPage("home")},"🌱 FruitLink"),
+    React.createElement("div",{style:{display:"flex",gap:1}},
+      pages.map(([p,l])=>React.createElement("button",{key:p,onClick:()=>setPage(p),style:{padding:"6px 9px",borderRadius:8,fontSize:12,fontWeight:500,cursor:"pointer",color:page===p?G.g600:G.gy600,background:page===p?G.g50:"none",border:"none",fontFamily:sans}},l))
+    ),
+    React.createElement("div",{style:{display:"flex",gap:8,alignItems:"center"}},
+      user
+        ?React.createElement("div",{style:{display:"flex",gap:8,alignItems:"center"}},
+          user.role==="admin"&&React.createElement("button",{onClick:()=>setPage("admin"),style:btn(G.gy100,G.g600,{padding:"7px 12px",fontSize:12})},"🛡️ Admin"),
+          user.role!=="admin"&&React.createElement("button",{onClick:()=>setPage("farmer"),style:btn(G.gy100,G.gy600,{padding:"7px 12px",fontSize:12})},"🧑‍🌾 Nông dân"),
+          React.createElement("div",{onClick:()=>setPage(user.role==="admin"?"admin":"profile"),style:{width:34,height:34,borderRadius:"50%",background:G.g100,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:600,fontSize:13,color:G.g700,cursor:"pointer"}},user.name[0]),
+          React.createElement("button",{onClick:()=>setUser(null),style:btn(G.gy100,G.gy600,{padding:"7px 10px",fontSize:12})},"Đăng xuất")
+        )
+        :React.createElement("div",{style:{display:"flex",gap:7}},
+          React.createElement("button",{onClick:()=>setPage("login"),style:btn("transparent",G.g600,{border:`1px solid ${G.g500}`})},"Đăng nhập"),
+          React.createElement("button",{onClick:()=>setPage("register"),style:btn(G.g500,G.w)},"Đăng ký")
+        )
+    )
+  );
+}
+
+function AuthPage({type,setPage,setUser}){
+  const isLogin=type==="login";
+  const [form,setForm]=useState({name:"",email:"",phone:"",pass:"",confirm:""});
+  const [otp,setOtp]=useState("");
+  const [step,setStep]=useState(1);
+  const [err,setErr]=useState("");
+  const update=k=>e=>setForm({...form,[k]:e.target.value});
+  const submit=()=>{
+    if(isLogin){
+      if(!form.email||!form.pass){setErr("Vui lòng điền đầy đủ");return;}
+      const account=DEMO_USERS[form.email.trim().toLowerCase()];
+      if(!account||account.pass!==form.pass){setErr("Email hoặc mật khẩu không đúng");return;}
+      setUser(account.user);
+      setPage(account.page);
+    } else {
+      if(step===1){
+        if(!form.name||!form.email||!form.phone||!form.pass){setErr("Vui lòng điền đầy đủ");return;}
+        if(form.pass!==form.confirm){setErr("Mật khẩu không khớp");return;}
+        setErr("");setStep(2);
+      } else {
+        if(otp.length<4){setErr("Nhập mã OTP 6 số");return;}
+        setUser({name:form.name,email:form.email,rank:"Mầm non 🌱",points:0,investments:0});
+        setPage("home");
+      }
+    }
+  };
+  return React.createElement("div",{style:{minHeight:"80vh",display:"flex",alignItems:"center",justifyContent:"center",background:G.gy50,padding:24}},
+    React.createElement("div",{style:{background:G.w,borderRadius:18,border:`0.5px solid ${G.gy200}`,padding:36,width:"100%",maxWidth:400}},
+      React.createElement("div",{style:{textAlign:"center",marginBottom:28}},
+        React.createElement("div",{style:{fontSize:40,marginBottom:10}},"🌱"),
+        React.createElement("h1",{style:{fontSize:24,fontFamily:serif,color:G.gy800,marginBottom:6}},isLogin?"Chào mừng trở lại":"Tạo tài khoản"),
+        React.createElement("p",{style:{fontSize:13,color:G.gy600}},isLogin?"Đăng nhập vào FruitLink":"Bắt đầu hành trình đầu tư nông sản")
+      ),
+      !isLogin&&React.createElement("div",{style:{display:"flex",gap:0,marginBottom:24,border:`1px solid ${G.gy200}`,borderRadius:9,overflow:"hidden"}},
+        ["Thông tin","Xác thực OTP"].map((l,i)=>React.createElement("div",{key:i,style:{flex:1,padding:"8px 0",textAlign:"center",fontSize:12,fontWeight:500,background:step===i+1?G.g500:G.w,color:step===i+1?G.w:G.gy400,cursor:"pointer"}},l))
+      ),
+      err&&React.createElement("div",{style:{background:"#ffebee",color:G.r500,borderRadius:8,padding:"10px 14px",fontSize:13,marginBottom:16}},err),
+      isLogin&&React.createElement("div",{style:{background:G.g50,border:`1px solid ${G.g200}`,borderRadius:10,padding:12,marginBottom:16,fontSize:12,color:G.gy600,lineHeight:1.7}},
+        React.createElement("strong",{style:{display:"block",color:G.g700,marginBottom:4}},"Tài khoản demo"),
+        React.createElement("div",{},"Admin: admin@fruitlink.local / Admin@FruitLink2026"),
+        React.createElement("div",{},"Nông dân: farmer@fruitlink.local / Farmer@FruitLink2026"),
+        React.createElement("div",{},"Nhà đầu tư: investor@fruitlink.local / Investor@FruitLink2026")
+      ),
+      step===1?React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:13}},
+        !isLogin&&React.createElement("input",{style:input,placeholder:"Họ và tên",value:form.name,onChange:update("name")}),
+        React.createElement("input",{style:input,placeholder:"Email",type:"email",value:form.email,onChange:update("email")}),
+        !isLogin&&React.createElement("input",{style:input,placeholder:"Số điện thoại",value:form.phone,onChange:update("phone")}),
+        React.createElement("input",{style:input,placeholder:"Mật khẩu",type:"password",value:form.pass,onChange:update("pass")}),
+        !isLogin&&React.createElement("input",{style:input,placeholder:"Xác nhận mật khẩu",type:"password",value:form.confirm,onChange:update("confirm")}),
+        React.createElement("button",{style:{...btn(G.g500,G.w),width:"100%",padding:13,fontSize:14,marginTop:4},onClick:submit},isLogin?"Đăng nhập":"Tiếp theo →")
+      ):React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:13}},
+        React.createElement("div",{style:{background:G.g50,borderRadius:10,padding:16,textAlign:"center",marginBottom:8}},
+          React.createElement("div",{style:{fontSize:28,marginBottom:6}},"📱"),
+          React.createElement("p",{style:{fontSize:13,color:G.g700,lineHeight:1.6}},`Mã OTP đã gửi đến ${form.phone}. Nhập mã để hoàn tất đăng ký.`),
+          React.createElement("p",{style:{fontSize:12,color:G.gy600,marginTop:6}},"(Demo: nhập bất kỳ 4+ ký tự)")
+        ),
+        React.createElement("input",{style:{...input,textAlign:"center",fontSize:22,letterSpacing:8,fontWeight:600},placeholder:"------",maxLength:6,value:otp,onChange:e=>setOtp(e.target.value)}),
+        React.createElement("button",{style:{...btn(G.g500,G.w),width:"100%",padding:13,fontSize:14},onClick:submit},"✅ Xác nhận & Đăng ký")
+      ),
+      React.createElement("div",{style:{textAlign:"center",marginTop:20,fontSize:13,color:G.gy600}},
+        isLogin?"Chưa có tài khoản? ":"Đã có tài khoản? ",
+        React.createElement("span",{style:{color:G.g600,cursor:"pointer",fontWeight:500},onClick:()=>setPage(isLogin?"register":"login")},isLogin?"Đăng ký ngay":"Đăng nhập")
+      ),
+      isLogin&&React.createElement("div",{style:{textAlign:"center",marginTop:8}},
+        React.createElement("span",{style:{fontSize:13,color:G.g600,cursor:"pointer"}},"Quên mật khẩu?")
+      )
+    )
+  );
+}
+
+function ProfilePage({user,setPage}){
+  const [activeTab,setActiveTab]=useState("overview");
+  const tabs=[["overview","📊 Tổng quan"],["history","📋 Lịch sử"],["points","🏆 Điểm thưởng"],["settings","⚙️ Cài đặt"]];
+  const history=[
+    {id:"FL-1-2847",name:"Xoài Cát Hoà Lộc",emoji:"🥭",date:"03/03/2025",amount:450000,status:"Đang canh tác",statusColor:G.g500},
+    {id:"FL-3-1923",name:"Sầu Riêng Monthong",emoji:"🍑",date:"15/02/2025",amount:890000,status:"Đang canh tác",statusColor:G.g500},
+    {id:"FL-2-0441",name:"Thanh Long Ruột Đỏ",emoji:"🍈",date:"10/10/2024",amount:320000,status:"Hoàn tất",statusColor:G.t500},
+  ];
+  const ranks=[
+    {r:"Mầm non 🌱",min:0,max:5000000,col:G.g400},
+    {r:"Canh nông 🌿",min:5000000,max:20000000,col:G.t500},
+    {r:"Đại điền 🌳",min:20000000,max:null,col:G.a400},
+  ];
+  const perks=[
+    {pts:0,label:"Chào mừng thành viên mới",done:true},
+    {pts:100,label:"Hoàn thành hồ sơ",done:true},
+    {pts:200,label:"Đầu tư lần đầu",done:true},
+    {pts:500,label:"Đầu tư 3 mùa vụ",done:false},
+    {pts:1000,label:"Hạng Canh Nông đầu tiên",done:false},
+  ];
+  return React.createElement("div",{style:{padding:"32px 20px",maxWidth:1100,margin:"0 auto"}},
+    React.createElement("div",{style:{background:`linear-gradient(135deg,${G.g600},${G.g500})`,borderRadius:16,padding:28,marginBottom:24,display:"flex",gap:20,alignItems:"center"}},
+      React.createElement("div",{style:{width:72,height:72,borderRadius:"50%",background:"rgba(255,255,255,.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,fontWeight:700,color:G.w,fontFamily:serif}},user.name[0]),
+      React.createElement("div",{style:{flex:1}},
+        React.createElement("h1",{style:{fontSize:24,color:G.w,fontFamily:serif,marginBottom:4}},"Xin chào, "+user.name+" 👋"),
+        React.createElement("div",{style:{display:"flex",gap:12,flexWrap:"wrap"}},
+          React.createElement("span",{style:{...badge("rgba(255,255,255,.2)",G.w),fontSize:13}},user.rank),
+          React.createElement("span",{style:{...badge("rgba(255,255,255,.2)",G.w),fontSize:13}},"🏆 "+user.points+" điểm"),
+          React.createElement("span",{style:{...badge("rgba(255,255,255,.2)",G.w),fontSize:13}},"💼 "+user.investments+" đang đầu tư")
+        )
+      ),
+      React.createElement("button",{style:btn("rgba(255,255,255,.15)",G.w)},"✏️ Chỉnh sửa")
+    ),
+    React.createElement("div",{style:{display:"flex",gap:4,marginBottom:24,background:G.gy100,borderRadius:10,padding:4}},
+      tabs.map(([k,l])=>React.createElement("button",{key:k,onClick:()=>setActiveTab(k),style:{flex:1,padding:"8px 4px",borderRadius:8,fontSize:13,fontWeight:500,cursor:"pointer",border:"none",background:activeTab===k?G.w:G.gy100,color:activeTab===k?G.g600:G.gy600,fontFamily:sans,transition:"all .15s"}}," "+l))
+    ),
+    activeTab==="overview"&&React.createElement("div",{},
+      React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:14,marginBottom:24}},
+        [["💼","2","Đang đầu tư"],["💰","1,340,000đ","Tổng đầu tư"],["🍃","3","Mùa vụ hoàn tất"],["🎫","1","Tour đã đặt"]].map(([e,v,l])=>
+          React.createElement("div",{key:l,style:{background:G.g50,borderRadius:12,padding:18,textAlign:"center"}},
+            React.createElement("div",{style:{fontSize:22,marginBottom:5}},e),
+            React.createElement("div",{style:{fontSize:20,fontWeight:700,color:G.g700,fontFamily:serif}},v),
+            React.createElement("div",{style:{fontSize:11,color:G.gy600,marginTop:3}},l)
+          )
+        )
+      ),
+      React.createElement("h3",{style:{fontSize:17,marginBottom:14,color:G.gy800}},"Tiến trình hạng thành viên"),
+      React.createElement("div",{style:{background:G.w,borderRadius:14,border:`0.5px solid ${G.gy200}`,padding:20}},
+        ranks.map((r,i)=>React.createElement("div",{key:r.r,style:{display:"flex",alignItems:"center",gap:14,marginBottom:i<ranks.length-1?16:0}},
+          React.createElement("div",{style:{width:36,height:36,borderRadius:"50%",background:r.col+"22",border:`2px solid ${r.col}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:14}}),
+          React.createElement("div",{style:{flex:1}},
+            React.createElement("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:4}},
+              React.createElement("span",{style:{fontSize:13,fontWeight:500,color:G.gy800}},r.r),
+              React.createElement("span",{style:{fontSize:12,color:G.gy600}},r.max?`${(r.min/1000000).toFixed(0)}–${(r.max/1000000).toFixed(0)} triệu`:`${(r.min/1000000).toFixed(0)}+ triệu`)
+            ),
+            React.createElement("div",{style:{height:5,background:G.gy100,borderRadius:4,overflow:"hidden"}},
+              React.createElement("div",{style:{height:"100%",background:r.col,borderRadius:4,width:i===0?"100%":i===1?"26%":"0%"}})
+            )
+          )
+        ))
+      )
+    ),
+    activeTab==="history"&&React.createElement("div",{},
+      React.createElement("h3",{style:{fontSize:17,marginBottom:16,color:G.gy800}},"Lịch sử giao dịch"),
+      React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:12}},
+        history.map(h=>React.createElement("div",{key:h.id,style:{...card,padding:18,display:"flex",gap:14,alignItems:"center"}},
+          React.createElement("span",{style:{fontSize:32}},h.emoji),
+          React.createElement("div",{style:{flex:1}},
+            React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center"}},
+              React.createElement("span",{style:{fontWeight:500,fontSize:14,color:G.gy800}},h.name),
+              React.createElement("span",{style:{fontWeight:600,color:G.g600,fontSize:14}},h.amount.toLocaleString()+"đ")
+            ),
+            React.createElement("div",{style:{display:"flex",justifyContent:"space-between",marginTop:5}},
+              React.createElement("span",{style:{fontSize:12,color:G.gy600}},"Mã: "+h.id+" · "+h.date),
+              React.createElement("span",{style:{...badge(h.statusColor+"22",h.statusColor)}},h.status)
+            )
+          )
+        ))
+      )
+    ),
+    activeTab==="points"&&React.createElement("div",{},
+      React.createElement("div",{style:{background:G.g50,borderRadius:14,padding:22,marginBottom:20,textAlign:"center",border:`1px solid ${G.g200}`}},
+        React.createElement("div",{style:{fontSize:36,marginBottom:6}},"🏆"),
+        React.createElement("div",{style:{fontSize:32,fontWeight:700,color:G.g700,fontFamily:serif}},user.points),
+        React.createElement("div",{style:{fontSize:13,color:G.gy600}},"Điểm hiện có")
+      ),
+      React.createElement("h3",{style:{fontSize:16,marginBottom:14,color:G.gy800}},"Nhiệm vụ tích điểm"),
+      React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:10}},
+        perks.map(p=>React.createElement("div",{key:p.pts,style:{display:"flex",gap:12,alignItems:"center",padding:14,background:G.w,borderRadius:12,border:`0.5px solid ${G.gy200}`}},
+          React.createElement("div",{style:{width:32,height:32,borderRadius:"50%",background:p.done?G.g100:G.gy100,display:"flex",alignItems:"center",justifyContent:"center",fontSize:14}},p.done?"✅":"⬜"),
+          React.createElement("div",{style:{flex:1}},
+            React.createElement("div",{style:{fontSize:13,fontWeight:500,color:p.done?G.gy400:G.gy800,textDecoration:p.done?"line-through":"none"}},p.label),
+            React.createElement("div",{style:{fontSize:11,color:G.gy600}},"+"+p.pts+" điểm")
+          )
+        ))
+      )
+    ),
+    activeTab==="settings"&&React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:16}},
+      React.createElement("div",{style:{...card,padding:22}},
+        React.createElement("h3",{style:{fontSize:16,marginBottom:16,color:G.gy800}},"Thông tin cá nhân"),
+        React.createElement("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:13}},
+          [["Họ và tên",user.name],["Email",user.email],["Số điện thoại","0901 234 567"],["Địa chỉ","Quận 1, TP.HCM"]].map(([k,v])=>
+            React.createElement("div",{key:k},
+              React.createElement("label",{style:{fontSize:12,color:G.gy600,display:"block",marginBottom:5}},k),
+              React.createElement("input",{style:input,defaultValue:v})
+            )
+          )
+        ),
+        React.createElement("button",{style:{...btn(G.g500,G.w),marginTop:16}},"💾 Lưu thay đổi")
+      ),
+      React.createElement("div",{style:{...card,padding:22}},
+        React.createElement("h3",{style:{fontSize:16,marginBottom:16,color:G.gy800}},"Thông báo"),
+        [["📱 Thông báo từ nông dân",true],["📧 Email bản tin FruitLink",true],["🎪 Thông báo tour mới",false]].map(([l,on])=>
+          React.createElement("div",{key:l,style:{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 0",borderBottom:`0.5px solid ${G.gy200}`}},
+            React.createElement("span",{style:{fontSize:14,color:G.gy800}},l),
+            React.createElement("div",{style:{width:40,height:22,borderRadius:11,background:on?G.g500:G.gy200,position:"relative",cursor:"pointer"}},
+              React.createElement("div",{style:{width:18,height:18,borderRadius:"50%",background:G.w,position:"absolute",top:2,left:on?20:2,transition:"left .2s"}})
+            )
+          )
+        )
+      )
+    )
+  );
+}
+
+function FarmerPage({setPage}){
+  const [activeTab,setActiveTab]=useState("dashboard");
+  const [newLog,setNewLog]=useState("");
+  const [logs,setLogs]=useState([
+    {date:"12/04/2025",text:"Bón phân hữu cơ lần 2. Cây phát triển tốt."},
+    {date:"05/04/2025",text:"Kiểm tra sâu bệnh định kỳ. Không phát hiện dịch hại."},
+    {date:"28/03/2025",text:"Tỉa cành tạo tán. Hoa đầu tiên xuất hiện."},
+  ]);
+  const tabs=[["dashboard","📊 Dashboard"],["products","🌿 Mùa vụ"],["journal","📔 Nhật ký"],["payments","💳 Thanh toán"]];
+  const addLog=()=>{
+    if(!newLog.trim())return;
+    const today=new Date();
+    const d=`${String(today.getDate()).padStart(2,"0")}/${String(today.getMonth()+1).padStart(2,"0")}/${today.getFullYear()}`;
+    setLogs([{date:d,text:newLog},...logs]);
+    setNewLog("");
+  };
+  return React.createElement("div",{style:{padding:"28px 20px",maxWidth:1100,margin:"0 auto"}},
+    React.createElement("div",{style:{background:G.g700,borderRadius:16,padding:"22px 24px",marginBottom:22,display:"flex",justifyContent:"space-between",alignItems:"center"}},
+      React.createElement("div",{},
+        React.createElement("div",{style:{fontSize:13,color:"rgba(255,255,255,.65)",marginBottom:4}},"Dashboard Nông dân · hAgri Platform"),
+        React.createElement("h1",{style:{fontSize:24,color:G.w,fontFamily:serif}},"Xin chào, Anh Minh Tuấn 👨‍🌾")
+      ),
+      React.createElement("div",{style:{display:"flex",gap:10}},
+        React.createElement("button",{style:btn("rgba(255,255,255,.15)",G.w)},"📋 Thêm mùa vụ mới"),
+        React.createElement("button",{style:btn(G.a400,G.w)},"📢 Thông báo nhà ĐT")
+      )
+    ),
+    React.createElement("div",{style:{display:"flex",gap:4,marginBottom:22,background:G.gy100,borderRadius:10,padding:4}},
+      tabs.map(([k,l])=>React.createElement("button",{key:k,onClick:()=>setActiveTab(k),style:{flex:1,padding:"8px 4px",borderRadius:8,fontSize:13,fontWeight:500,cursor:"pointer",border:"none",background:activeTab===k?G.w:G.gy100,color:activeTab===k?G.g600:G.gy600,fontFamily:sans}}," "+l))
+    ),
+    activeTab==="dashboard"&&React.createElement("div",{},
+      React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:14,marginBottom:24}},
+        [["🌿","2","Mùa vụ đang canh tác"],["👥","26","Nhà đầu tư"],["💰","17,860,000đ","Đã nhận vốn"],["📦","0","Đơn chờ giao hàng"]].map(([e,v,l])=>
+          React.createElement("div",{key:l,style:{background:G.g50,borderRadius:12,padding:18,textAlign:"center"}},
+            React.createElement("div",{style:{fontSize:22,marginBottom:5}},e),
+            React.createElement("div",{style:{fontSize:19,fontWeight:700,color:G.g700,fontFamily:serif}},v),
+            React.createElement("div",{style:{fontSize:11,color:G.gy600,marginTop:3}},l)
+          )
+        )
+      ),
+      React.createElement("div",{style:{display:"grid",gridTemplateColumns:"2fr 1fr",gap:20}},
+        React.createElement("div",{style:{...card,padding:20}},
+          React.createElement("h3",{style:{fontSize:16,marginBottom:16,color:G.gy800}},"Tiến trình mùa vụ"),
+          FARMER_PRODUCTS.map(p=>React.createElement("div",{key:p.id,style:{marginBottom:16,paddingBottom:16,borderBottom:`0.5px solid ${G.gy200}`}},
+            React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}},
+              React.createElement("span",{style:{fontWeight:500,fontSize:14}},p.emoji+" "+p.name),
+              React.createElement("span",{style:{...badge(G.g100,G.g700)}},p.status)
+            ),
+            React.createElement("div",{style:{height:6,background:G.gy200,borderRadius:4,overflow:"hidden",marginBottom:5}},
+              React.createElement("div",{style:{height:"100%",background:G.g400,borderRadius:4,width:p.funded+"%"}})
+            ),
+            React.createElement("div",{style:{display:"flex",justifyContent:"space-between",fontSize:11,color:G.gy600}},
+              React.createElement("span",{},p.funded+"% đầu tư · "+p.investors+" nhà ĐT"),
+              React.createElement("span",{},"Thu hoạch: "+p.harvest)
+            )
+          ))
+        ),
+        React.createElement("div",{style:{...card,padding:20}},
+          React.createElement("h3",{style:{fontSize:16,marginBottom:14,color:G.gy800}},"Tin nhắn nhà ĐT"),
+          [["Chị Thu Hà","Cây xoài hôm nay thế nào?","10:32"],["Anh Minh Đức","Khi nào có thể đặt tour?","09:15"],["Chị Lan Anh","Nông sản có giao tận nhà không?","Hôm qua"]].map(m=>
+            React.createElement("div",{key:m[0],style:{display:"flex",gap:10,marginBottom:14,cursor:"pointer"}},
+              React.createElement("div",{style:{width:34,height:34,borderRadius:"50%",background:G.g100,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:600,color:G.g700,flexShrink:0}},m[0][3]),
+              React.createElement("div",{style:{flex:1,minWidth:0}},
+                React.createElement("div",{style:{display:"flex",justifyContent:"space-between"}},
+                  React.createElement("span",{style:{fontSize:13,fontWeight:500,color:G.gy800}},m[0]),
+                  React.createElement("span",{style:{fontSize:11,color:G.gy600}},m[2])
+                ),
+                React.createElement("p",{style:{fontSize:12,color:G.gy600,marginTop:2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}},m[1])
+              )
+            )
+          )
+        )
+      )
+    ),
+    activeTab==="journal"&&React.createElement("div",{},
+      React.createElement("div",{style:{...card,padding:20,marginBottom:18}},
+        React.createElement("h3",{style:{fontSize:16,marginBottom:14,color:G.gy800}},"📝 Thêm nhật ký hôm nay"),
+        React.createElement("textarea",{style:{...input,minHeight:90,resize:"vertical"},placeholder:"Mô tả hoạt động canh tác hôm nay: tưới nước, bón phân, kiểm tra sâu bệnh...",value:newLog,onChange:e=>setNewLog(e.target.value)}),
+        React.createElement("div",{style:{display:"flex",gap:10,marginTop:12}},
+          React.createElement("button",{style:btn(G.g500,G.w),onClick:addLog},"📌 Đăng nhật ký"),
+          React.createElement("button",{style:btn(G.gy100,G.gy600)},"📷 Thêm ảnh"),
+          React.createElement("button",{style:btn(G.gy100,G.gy600)},"🌡️ Thêm dữ liệu")
+        )
+      ),
+      React.createElement("h3",{style:{fontSize:16,marginBottom:14,color:G.gy800}},"Nhật ký đã đăng"),
+      React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:12}},
+        logs.map((l,i)=>React.createElement("div",{key:i,style:{...card,padding:18,display:"flex",gap:14}},
+          React.createElement("div",{style:{width:40,height:40,borderRadius:"50%",background:G.g50,display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}},"👨‍🌾"),
+          React.createElement("div",{},
+            React.createElement("div",{style:{fontSize:12,color:G.gy600,marginBottom:4}},"Minh Tuấn · "+l.date),
+            React.createElement("p",{style:{fontSize:14,color:G.gy800,lineHeight:1.65}},l.text),
+            React.createElement("div",{style:{marginTop:8,fontSize:12,color:G.gy600}},"👁 "+Math.floor(Math.random()*10+5)+" nhà đầu tư đã xem · ❤️ "+Math.floor(Math.random()*5+1))
+          )
+        ))
+      )
+    ),
+    activeTab==="payments"&&React.createElement("div",{},
+      React.createElement("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20,marginBottom:20}},
+        React.createElement("div",{style:{background:G.g50,borderRadius:14,padding:22,border:`1px solid ${G.g200}`}},
+          React.createElement("div",{style:{fontSize:13,color:G.gy600,marginBottom:4}},"Đã nhận (đợt 1 - 50%)"),
+          React.createElement("div",{style:{fontSize:28,fontWeight:700,color:G.g700,fontFamily:serif}},"8,930,000đ"),
+          React.createElement("div",{style:{fontSize:12,color:G.gy600,marginTop:4}},"Từ 26 nhà đầu tư · 2 mùa vụ")
+        ),
+        React.createElement("div",{style:{background:"#fff8e1",borderRadius:14,padding:22,border:`1px solid ${G.a400}44`}},
+          React.createElement("div",{style:{fontSize:13,color:G.gy600,marginBottom:4}},"Chờ nhận (đợt 2 - sau thu hoạch)"),
+          React.createElement("div",{style:{fontSize:28,fontWeight:700,color:G.a500,fontFamily:serif}},"8,930,000đ"),
+          React.createElement("div",{style:{fontSize:12,color:G.gy600,marginTop:4}},"Sau khi hoàn tất giao hàng")
+        )
+      ),
+      React.createElement("h3",{style:{fontSize:16,marginBottom:14,color:G.gy800}},"Lịch sử thanh toán"),
+      React.createElement("div",{style:{...card,overflow:"hidden"}},
+        [["FL-1-2847","Xoài Cát Hoà Lộc","03/03/2025","225,000đ","Đã nhận",G.g500],["FL-3-1923","Sầu Riêng Monthong","15/02/2025","445,000đ","Đã nhận",G.g500],["FL-2-0441","Thanh Long Ruột Đỏ","10/10/2024","160,000đ","Hoàn tất",G.t500]].map((r,i)=>
+          React.createElement("div",{key:r[0],style:{display:"flex",gap:12,alignItems:"center",padding:"14px 18px",borderBottom:i<2?`0.5px solid ${G.gy200}`:"none"}},
+            React.createElement("span",{style:{fontSize:22}},r[1].includes("Xoài")?"🥭":r[1].includes("Sầu")?"🍑":"🍈"),
+            React.createElement("div",{style:{flex:1}},
+              React.createElement("div",{style:{fontSize:13,fontWeight:500,color:G.gy800}},r[1]),
+              React.createElement("div",{style:{fontSize:11,color:G.gy600}},"Mã: "+r[0]+" · "+r[2])
+            ),
+            React.createElement("span",{style:{fontWeight:600,color:G.g600,fontSize:14}},r[3]),
+            React.createElement("span",{style:{...badge(r[5]+"22",r[5])}},r[4])
+          )
+        )
+      )
+    ),
+    activeTab==="products"&&React.createElement("div",{},
+      FARMER_PRODUCTS.map(p=>React.createElement("div",{key:p.id,style:{...card,padding:22,marginBottom:16}},
+        React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:14}},
+          React.createElement("div",{style:{display:"flex",gap:14,alignItems:"center"}},
+            React.createElement("span",{style:{fontSize:40}},p.emoji),
+            React.createElement("div",{},
+              React.createElement("h3",{style:{fontSize:18,color:G.gy800}},p.name),
+              React.createElement("span",{style:{...badge(G.g100,G.g700)}},p.status)
+            )
+          ),
+          React.createElement("button",{style:btn(G.g500,G.w)},"📝 Cập nhật")
+        ),
+        React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12}},
+          [["👥 Nhà đầu tư",p.investors+" người"],["💰 Đã đầu tư",p.funded+"%"],["📦 Thu hoạch",p.harvest],["💵 Doanh thu dự kiến",p.income.toLocaleString()+"đ"]].map(([k,v])=>
+            React.createElement("div",{key:k,style:{background:G.gy50,borderRadius:10,padding:12}},
+              React.createElement("div",{style:{fontSize:12,color:G.gy600,marginBottom:3}},k),
+              React.createElement("div",{style:{fontSize:14,fontWeight:500,color:G.gy800}},v)
+            )
+          )
+        )
+      ))
+    )
+  );
+}
+
+function PaymentModal({product,qty,onClose,onSuccess}){
+  const [step,setStep]=useState(1);
+  const [method,setMethod]=useState("");
+  const total=product.price*qty;
+  const deposit=Math.floor(total*0.5);
+  const methods=[["bank","🏦 Chuyển khoản ngân hàng"],["momo","💜 Ví MoMo"],["vnpay","🟦 VNPay QR"],["card","💳 Thẻ tín dụng/ghi nợ"]];
+  return React.createElement("div",{style:{minHeight:500,background:"rgba(0,0,0,.45)",display:"flex",alignItems:"center",justifyContent:"center",padding:16}},
+    React.createElement("div",{style:{background:G.w,borderRadius:18,padding:28,width:"100%",maxWidth:440}},
+      React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:22}},
+        React.createElement("h2",{style:{fontSize:20,fontFamily:serif,color:G.gy800}},step===1?"Xác nhận đầu tư":step===2?"Chọn thanh toán":"Thanh toán thành công"),
+        React.createElement("button",{style:{background:"none",border:"none",cursor:"pointer",fontSize:18,color:G.gy600},onClick:onClose},"✕")
+      ),
+      step===1&&React.createElement("div",{},
+        React.createElement("div",{style:{background:G.g50,borderRadius:12,padding:18,marginBottom:18}},
+          React.createElement("div",{style:{display:"flex",gap:12,alignItems:"center",marginBottom:14}},
+            React.createElement("span",{style:{fontSize:36}},product.emoji),
+            React.createElement("div",{},
+              React.createElement("div",{style:{fontWeight:500,fontSize:15,color:G.gy800}},product.name),
+              React.createElement("div",{style:{fontSize:12,color:G.gy600}},"📍 "+product.region)
+            )
+          ),
+          [["Số suất đầu tư",qty+" suất"],["Giá mỗi suất",product.price.toLocaleString()+"đ"],["Tổng giá trị",total.toLocaleString()+"đ"],["Đặt cọc 50% hôm nay",deposit.toLocaleString()+"đ"],["Thanh toán sau thu hoạch",deposit.toLocaleString()+"đ"]].map(([k,v],i)=>
+            React.createElement("div",{key:k,style:{display:"flex",justifyContent:"space-between",padding:"8px 0",borderTop:i>0?`0.5px solid ${G.gy200}`:"none"}},
+              React.createElement("span",{style:{fontSize:13,color:G.gy600}},k),
+              React.createElement("span",{style:{fontSize:13,fontWeight:i===3?600:400,color:i===3?G.g600:G.gy800}},v)
+            )
+          )
+        ),
+        React.createElement("button",{style:{...btn(G.g500,G.w),width:"100%",padding:13,fontSize:14},onClick:()=>setStep(2)},"Tiếp theo: Chọn thanh toán →")
+      ),
+      step===2&&React.createElement("div",{},
+        React.createElement("div",{style:{background:G.g50,borderRadius:10,padding:14,marginBottom:18,textAlign:"center"}},
+          React.createElement("div",{style:{fontSize:13,color:G.gy600}},"Điểm hiện có"),"Số tiền đặt cọc",
+          React.createElement("div",{style:{fontSize:26,fontWeight:700,color:G.g600,fontFamily:serif}},deposit.toLocaleString()+"đ")
+        ),
+        React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:10,marginBottom:18}},
+          methods.map(([k,l])=>React.createElement("button",{key:k,onClick:()=>setMethod(k),style:{...btn(method===k?G.g50:G.w,G.gy800,{border:`1.5px solid ${method===k?G.g500:G.gy200}`,justifyContent:"flex-start",padding:"13px 16px",fontSize:14})},},l))
+        ),
+        React.createElement("button",{disabled:!method,style:{...btn(method?G.g500:G.gy200,G.w),width:"100%",padding:13,fontSize:14},onClick:()=>setStep(3)},"💳 Thanh toán ngay")
+      ),
+      step===3&&React.createElement("div",{style:{textAlign:"center",padding:"8px 0"}},
+        React.createElement("div",{style:{fontSize:60,marginBottom:12}},"🎉"),
+        React.createElement("h3",{style:{fontSize:20,color:G.g700,fontFamily:serif,marginBottom:8}},"Đầu tư thành công!"),
+        React.createElement("div",{style:{background:G.g50,borderRadius:10,padding:16,marginBottom:18}},
+          React.createElement("div",{style:{fontSize:12,color:G.gy600,marginBottom:4}},"Mã đầu tư của bạn"),
+          React.createElement("div",{style:{fontSize:18,fontWeight:700,color:G.g600,fontFamily:"monospace"}},"FL-"+product.id+"-"+Math.floor(Math.random()*9000+1000))
+        ),
+        React.createElement("p",{style:{fontSize:13,color:G.gy600,lineHeight:1.7,marginBottom:20}},"Chúng tôi sẽ gửi xác nhận qua email. Bạn có thể theo dõi tiến trình canh tác trong mục Theo dõi."),
+        React.createElement("button",{style:{...btn(G.g500,G.w),width:"100%",padding:13},onClick:onSuccess},"📊 Xem trạng thái đầu tư →")
+      )
+    )
+  );
+}
+
+function ProductCard({p,setPage}){
+  return React.createElement("div",{style:{...card,cursor:"pointer",boxShadow:"0 12px 28px rgba(27,94,32,.08)",transition:"transform .18s, box-shadow .18s"},onClick:()=>setPage("product-"+p.id)},
+    React.createElement("div",{style:{height:135,background:`linear-gradient(135deg,${G.g50},${G.g100})`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:58}},p.emoji),
+    React.createElement("div",{style:{padding:15}},
+      React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:10,marginBottom:6}},
+        React.createElement("h3",{style:{fontSize:16,lineHeight:1.25,color:G.gy800,fontWeight:700,margin:0}},p.name),
+        p.tags.includes("Hot")&&React.createElement("span",{style:{...badge("#fff8e1","#e65100"),flexShrink:0}},"🔥 Hot")
+      ),
+      React.createElement("p",{style:{fontSize:12,color:G.gy600,marginBottom:8}},"👨‍🌾 "+p.farmer),
+      React.createElement("p",{style:{fontSize:12,color:G.gy600,marginBottom:9}},"📍 "+p.region+" · "+p.harvest),
+      React.createElement("div",{style:{height:6,background:G.gy200,borderRadius:4,overflow:"hidden",marginBottom:5}},
+        React.createElement("div",{style:{height:"100%",background:G.g400,borderRadius:4,width:p.funded+"%"}})
+      ),
+      React.createElement("div",{style:{display:"flex",justifyContent:"space-between",fontSize:11,color:G.gy600,marginBottom:12}},
+        React.createElement("span",{style:{color:G.g500,fontWeight:700}},p.funded+"% đầu tư"),
+        React.createElement("span",{},"Còn "+p.left+" suất")
+      ),
+      React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",gap:12}},
+        React.createElement("span",{style:{fontSize:17,fontWeight:800,color:G.g600}},p.price.toLocaleString()+"đ"),
+        React.createElement("button",{style:{...btn(G.g500,G.w,{padding:"8px 13px",fontSize:12,fontWeight:700})},onClick:e=>{e.stopPropagation();setPage("product-"+p.id)}},"Đầu tư")
+      )
+    )
+  );
+}
+
+function TourCard({t}){
+  return React.createElement("div",{style:{...card,boxShadow:"0 12px 28px rgba(0,105,92,.07)"}},
+    React.createElement("div",{style:{height:118,background:"linear-gradient(135deg,#e0f2f1,#c8eee8)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:52}},t.emoji),
+    React.createElement("div",{style:{padding:15}},
+      React.createElement("h3",{style:{fontSize:15,marginBottom:5,color:G.gy800,lineHeight:1.3,fontWeight:700}},t.name),
+      React.createElement("p",{style:{fontSize:12,color:G.gy600}},"📍 "+t.region+" · "+t.date),
+      React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:12}},
+        React.createElement("span",{style:{fontSize:15,fontWeight:800,color:G.g600}},t.price.toLocaleString()+"đ"),
+        React.createElement("button",{style:{...btn(G.g500,G.w,{padding:"7px 11px",fontSize:12,fontWeight:700})}},"Đặt tour")
+      )
+    )
+  );
+}
+
+function HomePage({setPage}){
+  return React.createElement("div",{},
+    React.createElement("div",{style:{background:G.g600,color:G.w,padding:"60px 20px 68px"}},
+      React.createElement("div",{style:{maxWidth:1100,margin:"0 auto",display:"grid",gridTemplateColumns:"1fr 1fr",gap:44,alignItems:"center"}},
+        React.createElement("div",{},
+          React.createElement("div",{style:{...badge("rgba(255,255,255,.15)",G.w),marginBottom:14,fontSize:12}},"🌱 Nền tảng nông sản số Việt Nam"),
+          React.createElement("h1",{style:{fontSize:38,lineHeight:1.15,marginBottom:16,color:G.w,fontFamily:serif}},'Từ "giải cứu"',React.createElement("br"),"đến thịnh vượng"),
+          React.createElement("p",{style:{fontSize:14,color:"rgba(255,255,255,.82)",lineHeight:1.75,marginBottom:28,maxWidth:420}},"FruitLink kết nối nông dân – nhà đầu tư – người tiêu dùng. Đầu tư vốn, nhận nông sản sạch từ vườn và trải nghiệm thu hoạch thực tế."),
+          React.createElement("div",{style:{display:"flex",gap:10}},
+            React.createElement("button",{style:{...btn(G.a400,G.w,{padding:"11px 20px",fontSize:14})},onClick:()=>setPage("explore")},"🥭 Khám phá nông sản"),
+            React.createElement("button",{style:{...btn("rgba(255,255,255,.15)",G.w,{padding:"11px 20px",fontSize:14})},onClick:()=>setPage("invest")},"Tìm hiểu mô hình →")
+          )
+        ),
+        React.createElement("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}},
+          [["🧑‍🌾","1,200+","Nông dân"],["💰","4.8 tỷ","Vốn đầu tư"],["🍃","98%","Sạch chuẩn"],["🎯","340+","Mùa vụ"]].map(([e,n,l])=>
+            React.createElement("div",{key:l,style:{background:"rgba(255,255,255,.12)",borderRadius:12,padding:16,textAlign:"center"}},
+              React.createElement("div",{style:{fontSize:24,marginBottom:6}},e),
+              React.createElement("div",{style:{fontSize:20,fontWeight:600,color:G.w,fontFamily:serif}},n),
+              React.createElement("div",{style:{fontSize:11,color:"rgba(255,255,255,.65)",marginTop:3}},l)
+            )
+          )
+        )
+      )
+    ),
+    React.createElement("div",{style:{padding:"36px 20px",background:G.w}},
+      React.createElement("div",{style:{maxWidth:1100,margin:"0 auto"}},
+        React.createElement("h2",{style:{textAlign:"center",fontSize:26,marginBottom:6,fontFamily:serif,color:G.gy800}},"Cách FruitLink hoạt động"),
+        React.createElement("p",{style:{textAlign:"center",color:G.gy600,marginBottom:32,fontSize:13}},"3 bước đơn giản — đôi bên cùng có lợi"),
+        React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:20}},
+          [{e:"💰",n:"01",t:"Đầu tư vốn",d:"Chọn nông sản, thanh toán trước 50%. Nhận mã đầu tư."},{e:"🌱",n:"02",t:"Theo dõi canh tác",d:"Xem nhật ký kỹ thuật số, nhận thông báo từ nông dân."},{e:"🎉",n:"03",t:"Thu hoạch & nhận quà",d:"Thanh toán 50% còn lại, nhận nông sản tươi tận nhà."}].map(s=>
+            React.createElement("div",{key:s.n,style:{textAlign:"center",padding:"24px 18px",borderRadius:14,background:G.g50}},
+              React.createElement("div",{style:{fontSize:34,marginBottom:8}},s.e),
+              React.createElement("div",{style:{fontSize:11,fontWeight:600,color:G.g500,marginBottom:6,letterSpacing:1}},"BƯỚC "+s.n),
+              React.createElement("h3",{style:{fontSize:16,marginBottom:9,color:G.gy800}},s.t),
+              React.createElement("p",{style:{fontSize:13,color:G.gy600,lineHeight:1.65}},s.d)
+            )
+          )
+        )
+      )
+    ),
+    React.createElement("div",{style:{padding:"36px 20px"}},
+      React.createElement("div",{style:{maxWidth:1100,margin:"0 auto"}},
+        React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}},
+          React.createElement("h2",{style:{fontSize:22,fontFamily:serif,color:G.gy800}},"Nông sản nổi bật"),
+          React.createElement("button",{style:{...btn("transparent",G.g600,{border:`1.5px solid ${G.g500}`,padding:"7px 14px"})},onClick:()=>setPage("explore")},"Xem tất cả →")
+        ),
+        React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:18}},
+          PRODUCTS.slice(0,3).map(p=>React.createElement(ProductCard,{key:p.id,p,setPage}))
+        )
+      )
+    ),
+    React.createElement("div",{style:{padding:"36px 20px",background:G.g600}},
+      React.createElement("div",{style:{maxWidth:1100,margin:"0 auto",textAlign:"center"}},
+        React.createElement("h2",{style:{fontSize:28,color:G.w,marginBottom:8,fontFamily:serif}},"Lợi ích đôi bên"),
+        React.createElement("p",{style:{color:"rgba(255,255,255,.7)",marginBottom:32,fontSize:13}},"Không phải đầu tư tài chính — là đầu tư cho sức khoẻ và cộng đồng"),
+        React.createElement("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:18,maxWidth:760,margin:"0 auto"}},
+          [{t:"Với nông dân 🧑‍🌾",i:["Vốn trả trước, không bị ép giá","Đầu ra được đảm bảo","Nhật ký canh tác kỹ thuật số","Xây dựng thương hiệu địa phương"]},{t:"Với nhà đầu tư 💼",i:["Nông sản sạch trực tiếp từ vườn","Giám sát quá trình trực tuyến","Trải nghiệm thu hoạch thực tế","Tích điểm & nâng hạng thành viên"]}].map(b=>
+            React.createElement("div",{key:b.t,style:{background:"rgba(255,255,255,.1)",borderRadius:14,padding:22,textAlign:"left"}},
+              React.createElement("h3",{style:{color:G.w,fontSize:16,marginBottom:12}},b.t),
+              b.i.map(x=>React.createElement("div",{key:x,style:{display:"flex",gap:8,marginBottom:9}},
+                React.createElement("span",{style:{color:G.a400}},"✓"),
+                React.createElement("span",{style:{color:"rgba(255,255,255,.82)",fontSize:13}},x)
+              ))
+            )
+          )
+        )
+      )
+    ),
+    React.createElement("div",{style:{padding:"36px 20px",background:G.w}},
+      React.createElement("div",{style:{maxWidth:1100,margin:"0 auto"}},
+        React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}},
+          React.createElement("h2",{style:{fontSize:22,fontFamily:serif,color:G.gy800}},"Tour thu hoạch sắp tới"),
+          React.createElement("button",{style:{...btn("transparent",G.g600,{border:`1.5px solid ${G.g500}`,padding:"7px 14px"})},onClick:()=>setPage("tour")},"Xem tất cả →")
+        ),
+        React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:18}},
+          TOURS.map(t=>React.createElement(TourCard,{key:t.id,t}))
+        )
+      )
+    )
+  );
+}
+
+function ExplorePage({setPage}){
+  const [tag,setTag]=useState("Tất cả");
+  const [q,setQ]=useState("");
+  const tags=["Tất cả","Trái cây","Rau củ","Lương thực","Đặc sản","Hot"];
+  const list=PRODUCTS.filter(p=>(tag==="Tất cả"||p.tags.includes(tag))&&(!q||p.name.toLowerCase().includes(q.toLowerCase())||p.region.toLowerCase().includes(q.toLowerCase())));
+  return React.createElement("div",{style:{padding:"40px 20px",maxWidth:1100,margin:"0 auto"}},
+    React.createElement("h1",{style:{fontSize:28,marginBottom:5,fontFamily:serif,color:G.gy800}},"Khám phá nông sản"),
+    React.createElement("p",{style:{color:G.gy600,marginBottom:22,fontSize:13}},"Đầu tư vốn, nhận nông sản sạch trực tiếp từ vườn"),
+    React.createElement("input",{style:{...input,maxWidth:360,marginBottom:14},placeholder:"🔍 Tìm theo tên hoặc vùng...",value:q,onChange:e=>setQ(e.target.value)}),
+    React.createElement("div",{style:{display:"flex",gap:7,flexWrap:"wrap",marginBottom:22}},
+      tags.map(t=>React.createElement("button",{key:t,onClick:()=>setTag(t),style:{padding:"5px 13px",borderRadius:20,fontSize:12,fontWeight:500,cursor:"pointer",border:`1px solid ${tag===t?G.g500:G.gy200}`,background:tag===t?G.g50:G.w,color:tag===t?G.g600:G.gy600,fontFamily:sans}},t))
+    ),
+    list.length===0
+      ?React.createElement("div",{style:{textAlign:"center",padding:"40px",color:G.gy600}},"Không tìm thấy kết quả")
+      :React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:18}},
+        list.map(p=>React.createElement(ProductCard,{key:p.id,p,setPage}))
+      )
+  );
+}
+
+function ProductDetailPage({productId,setPage}){
+  const p=PRODUCTS.find(x=>x.id===productId)||PRODUCTS[0];
+  const [qty,setQty]=useState(1);
+  const [showPay,setShowPay]=useState(false);
+  if(showPay) return React.createElement(PaymentModal,{product:p,qty,onClose:()=>setShowPay(false),onSuccess:()=>{setShowPay(false);setPage("track");}});
+  return React.createElement("div",{style:{padding:"32px 20px",maxWidth:1100,margin:"0 auto"}},
+    React.createElement("button",{onClick:()=>setPage("explore"),style:{background:"none",border:"none",cursor:"pointer",color:G.g600,fontSize:13,marginBottom:18,fontFamily:sans}},"← Quay lại"),
+    React.createElement("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:36}},
+      React.createElement("div",{},
+        React.createElement("div",{style:{height:280,background:G.g50,borderRadius:16,display:"flex",alignItems:"center",justifyContent:"center",fontSize:90,marginBottom:14}},p.emoji),
+        React.createElement("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}},
+          [["📍 Vùng trồng",p.region],["🗓 Thu hoạch",p.harvest],["🌱 Suất còn",p.left+"/"+p.slots],["✅ Tiêu chuẩn","VietGAP"],["👨‍🌾 Nông dân",p.farmer],["🏷️ Loại",(p.tags||[]).join(", ")]].map(([k,v])=>
+            React.createElement("div",{key:k,style:{background:G.gy50,borderRadius:9,padding:11}},
+              React.createElement("div",{style:{fontSize:11,color:G.gy600,marginBottom:2}},k),
+              React.createElement("div",{style:{fontSize:13,fontWeight:500,color:G.gy800}},v)
+            )
+          )
+        )
+      ),
+      React.createElement("div",{},
+        React.createElement("div",{style:{display:"flex",gap:7,marginBottom:10,flexWrap:"wrap"}},
+          (p.tags||[]).map(t=>React.createElement("span",{key:t,style:{...badge(G.g100,G.g700)}},t))
+        ),
+        React.createElement("h1",{style:{fontSize:26,marginBottom:7,fontFamily:serif,color:G.gy800}},p.name),
+        React.createElement("p",{style:{fontSize:13,color:G.gy600,marginBottom:16,lineHeight:1.75}},"Nông sản tươi sạch đạt chuẩn VietGAP, canh tác bởi nông dân địa phương. Toàn bộ quá trình được ghi chép qua nhật ký kỹ thuật số hAgri."),
+        React.createElement("div",{style:{height:6,background:G.gy200,borderRadius:4,overflow:"hidden",marginBottom:5}},
+          React.createElement("div",{style:{height:"100%",background:G.g400,borderRadius:4,width:p.funded+"%"}})
+        ),
+        React.createElement("div",{style:{display:"flex",justifyContent:"space-between",fontSize:12,color:G.gy600,marginBottom:20}},
+          React.createElement("span",{style:{color:G.g500,fontWeight:500}},p.funded+"% đã đầu tư"),
+          React.createElement("span",{},"Còn "+p.left+" suất")
+        ),
+        React.createElement("div",{style:{background:G.g50,borderRadius:12,padding:17,marginBottom:16}},
+          React.createElement("div",{style:{fontSize:12,color:G.gy600,marginBottom:3}},"Giá mỗi suất"),
+          React.createElement("div",{style:{fontSize:28,fontWeight:700,color:G.g600,fontFamily:serif}},p.price.toLocaleString()+" đ"),
+          React.createElement("div",{style:{fontSize:12,color:G.gy600,marginTop:3}},"Nông sản tươi + đặc quyền tour thu hoạch")
+        ),
+        React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:14}},
+          React.createElement("span",{style:{fontSize:13,color:G.gy600}},"Số suất:"),
+          React.createElement("button",{style:{...btn(G.gy100,G.gy600,{padding:"5px 10px"})},onClick:()=>setQty(Math.max(1,qty-1))},"−"),
+          React.createElement("span",{style:{fontSize:16,fontWeight:500,minWidth:22,textAlign:"center"}},qty),
+          React.createElement("button",{style:{...btn(G.gy100,G.gy600,{padding:"5px 10px"})},onClick:()=>setQty(Math.min(p.left,qty+1))},"+"),
+          React.createElement("span",{style:{fontSize:13,color:G.gy600}},"= "+(p.price*qty).toLocaleString()+"đ")
+        ),
+        React.createElement("button",{style:{...btn(G.g500,G.w,{width:"100%",padding:13,fontSize:15}),justifyContent:"center"},onClick:()=>setShowPay(true)},"💰 Đầu tư ngay")
+      )
+    ),
+    React.createElement("div",{style:{height:1,background:G.gy200,margin:"28px 0"}}),
+    React.createElement("h2",{style:{fontSize:19,marginBottom:16,fontFamily:serif,color:G.gy800}},"Nhật ký canh tác"),
+    React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:12}},
+      [{date:"12/04/2025",text:"Bón phân hữu cơ lần 2. Cây phát triển tốt, lá xanh đều."},{date:"05/04/2025",text:"Kiểm tra sâu bệnh định kỳ. Không phát hiện dịch hại."},{date:"28/03/2025",text:"Tỉa cành tạo tán. Đợt hoa đầu tiên bắt đầu xuất hiện."}].map(l=>
+        React.createElement("div",{key:l.date,style:{display:"flex",gap:12,padding:15,background:G.w,borderRadius:12,border:`0.5px solid ${G.gy200}`}},
+          React.createElement("div",{style:{width:36,height:36,borderRadius:"50%",background:G.g100,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}},"👨‍🌾"),
+          React.createElement("div",{},
+            React.createElement("div",{style:{fontSize:11,color:G.gy600,marginBottom:3}},p.farmer+" · "+l.date),
+            React.createElement("p",{style:{fontSize:13,color:G.gy800,lineHeight:1.65}},l.text)
+          )
+        )
+      )
+    )
+  );
+}
+
+function InvestPage({setPage}){
+  return React.createElement("div",{},
+    React.createElement("div",{style:{background:G.g600,padding:"38px 20px",textAlign:"center"}},
+      React.createElement("h1",{style:{fontSize:32,color:G.w,fontFamily:serif,marginBottom:8}},"Mô hình đầu tư FruitLink"),
+      React.createElement("p",{style:{color:"rgba(255,255,255,.78)",fontSize:14,maxWidth:480,margin:"0 auto"}},"Không phải lãi suất — là đầu tư sức khoẻ, cộng đồng và tương lai bền vững")
+    ),
+    React.createElement("div",{style:{padding:"36px 20px",maxWidth:1100,margin:"0 auto"}},
+      React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:20,marginBottom:40}},
+        [{n:"01",e:"💰",t:"Đầu tư vốn",d:"Chọn nông sản, đặt cọc 50%. Nhận mã đầu tư."},{n:"02",e:"🌱",t:"Canh tác & Theo dõi",d:"Nông dân cập nhật nhật ký số. Bạn theo dõi thời gian thực."},{n:"03",e:"🎉",t:"Thu hoạch",d:"Thanh toán 50% còn lại. Nhận nông sản tươi + tour thu hoạch."}].map(s=>
+          React.createElement("div",{key:s.n,style:{background:G.w,border:`0.5px solid ${G.gy200}`,borderRadius:14,padding:22}},
+            React.createElement("div",{style:{display:"flex",gap:10,alignItems:"center",marginBottom:12}},
+              React.createElement("div",{style:{width:32,height:32,borderRadius:"50%",background:G.g500,color:G.w,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:600,fontSize:13}},s.n),
+              React.createElement("span",{style:{fontSize:20}},s.e)
+            ),
+            React.createElement("h3",{style:{fontSize:16,marginBottom:8,color:G.gy800}},s.t),
+            React.createElement("p",{style:{fontSize:13,color:G.gy600,lineHeight:1.65}},s.d)
+          )
+        )
+      ),
+      React.createElement("h2",{style:{fontSize:22,marginBottom:20,fontFamily:serif,color:G.gy800}},"Hạng thành viên"),
+      React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:18}},
+        [{r:"Mầm non 🌱",m:"0–5 triệu",p:["Tối đa 3 suất/mùa","Nhật ký cơ bản","Tích điểm"],bg:G.g50,bc:G.g400},{r:"Canh nông 🌿",m:"5–20 triệu",p:["Tối đa 10 suất/mùa","Ưu tiên suất hot","1 tour miễn phí/năm","Hỗ trợ 24/7"],bg:"#e0f2f1",bc:G.t500,hot:true},{r:"Đại điền 🌳",m:"20 triệu+",p:["Không giới hạn suất","Tour VIP riêng","Chuyển nhượng suất","Ưu đãi đặc biệt"],bg:"#fff8e1",bc:G.a400}].map(r=>
+          React.createElement("div",{key:r.r,style:{background:r.bg,borderRadius:14,padding:20,border:`1.5px solid ${r.bc}`,position:"relative"}},
+            r.hot&&React.createElement("span",{style:{...badge("#e0f2f1",G.t500),position:"absolute",top:12,right:12}},"Phổ biến"),
+            React.createElement("h3",{style:{fontSize:18,marginBottom:3,color:G.gy800}},r.r),
+            React.createElement("p",{style:{fontSize:12,color:G.gy600,marginBottom:12}},r.m),
+            r.p.map(x=>React.createElement("div",{key:x,style:{display:"flex",gap:7,marginBottom:8}},
+              React.createElement("span",{style:{color:G.g500,fontSize:12}},"✓"),
+              React.createElement("span",{style:{fontSize:12,color:G.gy600}},x)
+            ))
+          )
+        )
+      ),
+      React.createElement("div",{style:{textAlign:"center",marginTop:32}},
+        React.createElement("button",{style:{...btn(G.g500,G.w,{fontSize:15,padding:"13px 30px"})},onClick:()=>setPage("explore")},"🥭 Bắt đầu đầu tư ngay")
+      )
+    )
+  );
+}
+
+function TrackPage(){
+  const investments=[
+    {id:"FL-1-2847",name:"Xoài Cát Hoà Lộc",emoji:"🥭",region:"Tiền Giang",progress:72,stage:"Đang nuôi quả",harvest:"15/5/2025",paid:450000},
+    {id:"FL-3-1923",name:"Sầu Riêng Monthong",emoji:"🍑",region:"Tiền Giang",progress:45,stage:"Ra hoa",harvest:"20/7/2025",paid:890000},
+  ];
+  return React.createElement("div",{style:{padding:"36px 20px",maxWidth:1100,margin:"0 auto"}},
+    React.createElement("h1",{style:{fontSize:28,marginBottom:5,fontFamily:serif,color:G.gy800}},"Theo dõi đầu tư"),
+    React.createElement("p",{style:{color:G.gy600,marginBottom:24,fontSize:13}},"Tiến trình canh tác và nhật ký từ nông dân"),
+    React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12,marginBottom:30}},
+      [["💼","2 khoản","Đang đầu tư"],["💰","1,340,000đ","Tổng đầu tư"],["🏆","480 điểm","Thành viên"]].map(([e,v,l])=>
+        React.createElement("div",{key:l,style:{background:G.g50,borderRadius:12,padding:16,textAlign:"center"}},
+          React.createElement("div",{style:{fontSize:20,marginBottom:5}},e),
+          React.createElement("div",{style:{fontSize:18,fontWeight:700,color:G.g700,fontFamily:serif}},v),
+          React.createElement("div",{style:{fontSize:11,color:G.gy600,marginTop:2}},l)
+        )
+      )
+    ),
+    React.createElement("h2",{style:{fontSize:18,marginBottom:16,color:G.gy800}},"Các khoản đầu tư"),
+    React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:16}},
+      investments.map(inv=>React.createElement("div",{key:inv.id,style:{...card,padding:20}},
+        React.createElement("div",{style:{display:"flex",gap:16,alignItems:"flex-start"}},
+          React.createElement("span",{style:{fontSize:40}},inv.emoji),
+          React.createElement("div",{style:{flex:1}},
+            React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:5}},
+              React.createElement("div",{},
+                React.createElement("h3",{style:{fontSize:16,color:G.gy800}},inv.name),
+                React.createElement("p",{style:{fontSize:12,color:G.gy600}},"📍 "+inv.region+" · Mã: "+inv.id)
+              ),
+              React.createElement("span",{style:{...badge(G.g100,G.g700)}},inv.stage)
+            ),
+            React.createElement("div",{style:{height:6,background:G.gy200,borderRadius:4,overflow:"hidden",margin:"10px 0 5px"}},
+              React.createElement("div",{style:{height:"100%",background:G.g400,borderRadius:4,width:inv.progress+"%"}})
+            ),
+            React.createElement("div",{style:{display:"flex",justifyContent:"space-between",fontSize:11,color:G.gy600,marginBottom:12}},
+              React.createElement("span",{},"Tiến độ: ",React.createElement("strong",{style:{color:G.g500}},inv.progress+"%")),
+              React.createElement("span",{},"Thu hoạch: "+inv.harvest)
+            ),
+            React.createElement("div",{style:{display:"flex",gap:8,flexWrap:"wrap"}},
+              React.createElement("button",{style:btn("transparent",G.g600,{border:`1px solid ${G.g500}`,padding:"6px 12px",fontSize:12})},"📔 Nhật ký"),
+              React.createElement("button",{style:btn(G.gy100,G.gy600,{padding:"6px 12px",fontSize:12})},"💬 Nhắn nông dân"),
+              React.createElement("button",{style:btn(G.g500,G.w,{padding:"6px 12px",fontSize:12})},"🎫 Đặt tour")
+            )
+          )
+        )
+      ))
+    )
+  );
+}
+
+function TourPage(){
+  return React.createElement("div",{},
+    React.createElement("div",{style:{background:G.t500,padding:"38px 20px",textAlign:"center"}},
+      React.createElement("h1",{style:{fontSize:32,color:G.w,fontFamily:serif,marginBottom:8}},"Du lịch nông nghiệp"),
+      React.createElement("p",{style:{color:"rgba(255,255,255,.82)",fontSize:14}},"Đặt tour về vườn — trải nghiệm thu hoạch cùng nông dân")
+    ),
+    React.createElement("div",{style:{padding:"40px 20px",maxWidth:1100,margin:"0 auto"}},
+      React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:18,marginBottom:28}},
+        TOURS.map(t=>React.createElement(TourCard,{key:t.id,t}))
+      ),
+      React.createElement("div",{style:{background:G.g50,borderRadius:16,padding:28,textAlign:"center",border:`1px solid ${G.g200}`}},
+        React.createElement("h2",{style:{fontSize:20,marginBottom:8,color:G.gy800}},"Đặc quyền nhà đầu tư"),
+        React.createElement("p",{style:{color:G.gy600,fontSize:13,marginBottom:18,maxWidth:440,margin:"0 auto 18px"}},"Hạng Canh Nông trở lên: ưu tiên đặt tour, giảm 20% và khu thu hoạch riêng biệt."),
+        React.createElement("div",{style:{display:"flex",justifyContent:"center",gap:9,flexWrap:"wrap"}},
+          ["🎪 Lễ hội thu hoạch","🚜 Tham quan nông trại","👨‍🍳 Workshop chế biến","📸 Chụp ảnh vườn cây"].map(i=>
+            React.createElement("span",{key:i,style:{...badge("#e0f2f1",G.t500),fontSize:12,padding:"7px 13px"}},i)
+          )
+        )
+      )
+    )
+  );
+}
+
+function AdminPage({setPage}){
+  const pending=[
+    ["Xoài Cát Hoà Lộc","Nguyễn Minh Tuấn","Tiền Giang","Chờ duyệt"],
+    ["Gạo ST25 Hữu Cơ","Võ Minh Khoa","Sóc Trăng","Cần bổ sung QR"],
+    ["Rau Sạch VietGAP","Hoàng Thị Lan","Đà Lạt","Chờ kiểm tra"]
+  ];
+  const users=[
+    ["FruitLink Admin","admin@fruitlink.local","Admin","Đang hoạt động"],
+    ["Nguyễn Minh Tuấn","farmer@fruitlink.local","Nông dân","2 gói mùa vụ"],
+    ["Nguyễn Văn A","investor@fruitlink.local","Nhà đầu tư","2 khoản đầu tư"]
+  ];
+  const diary=["Ảnh vườn xoài tuần 04 cần duyệt","Nhật ký bón hữu cơ của rau Đà Lạt","QR truy xuất sầu riêng cần xác nhận"];
+  return React.createElement("div",{style:{padding:"36px 20px",maxWidth:1120,margin:"0 auto"}},
+    React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:20,marginBottom:24}},
+      React.createElement("div",{},
+        React.createElement("h1",{style:{fontSize:30,fontFamily:serif,color:G.gy800,marginBottom:6}},"Admin Dashboard"),
+        React.createElement("p",{style:{fontSize:13,color:G.gy600}},"Quản trị gói nông sản, nông dân, nhà đầu tư và nhật ký canh tác")
+      ),
+      React.createElement("div",{style:{display:"flex",gap:8,flexWrap:"wrap"}},
+        React.createElement("button",{style:btn(G.g500,G.w)},"➕ Thêm gói"),
+        React.createElement("button",{style:btn(G.gy100,G.gy600)},"📄 Xuất báo cáo")
+      )
+    ),
+    React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:14,marginBottom:24}},
+      [["4.8 tỷ","Tổng vốn gọi"],["1,200+","Nông dân"],["340+","Mùa vụ"],["3","Gói chờ duyệt"]].map(([v,l])=>React.createElement("div",{key:l,style:{background:G.g50,border:`1px solid ${G.g200}`,borderRadius:14,padding:18,textAlign:"center"}},
+        React.createElement("div",{style:{fontSize:24,fontWeight:800,color:G.g700,fontFamily:serif}},v),
+        React.createElement("div",{style:{fontSize:12,color:G.gy600,marginTop:4}},l)
+      ))
+    ),
+    React.createElement("div",{style:{display:"grid",gridTemplateColumns:"1.25fr .75fr",gap:18,marginBottom:18}},
+      React.createElement("section",{style:{...card,padding:20}},
+        React.createElement("h2",{style:{fontSize:19,fontFamily:serif,color:G.gy800,marginBottom:14}},"Gói nông sản cần duyệt"),
+        pending.map(r=>React.createElement("div",{key:r[0],style:{display:"grid",gridTemplateColumns:"1fr 130px 110px 150px",gap:12,alignItems:"center",padding:"13px 0",borderBottom:`1px solid ${G.gy200}`}},
+          React.createElement("strong",{style:{fontSize:14,color:G.gy800}},r[0]),
+          React.createElement("span",{style:{fontSize:12,color:G.gy600}},r[1]),
+          React.createElement("span",{style:{fontSize:12,color:G.gy600}},r[2]),
+          React.createElement("div",{style:{display:"flex",gap:6}},React.createElement("button",{style:btn(G.g500,G.w,{padding:"6px 10px",fontSize:11})},"Duyệt"),React.createElement("button",{style:btn(G.gy100,G.gy600,{padding:"6px 10px",fontSize:11})},"Từ chối"))
+        ))
+      ),
+      React.createElement("section",{style:{...card,padding:20}},
+        React.createElement("h2",{style:{fontSize:19,fontFamily:serif,color:G.gy800,marginBottom:14}},"Nhật ký cần kiểm duyệt"),
+        diary.map((d,i)=>React.createElement("div",{key:d,style:{padding:12,borderRadius:10,background:i===0?G.g50:G.gy50,marginBottom:10,fontSize:13,color:G.gy800}},"📝 "+d))
+      )
+    ),
+    React.createElement("section",{style:{...card,padding:20}},
+      React.createElement("h2",{style:{fontSize:19,fontFamily:serif,color:G.gy800,marginBottom:14}},"Người dùng hệ thống"),
+      users.map(u=>React.createElement("div",{key:u[1],style:{display:"grid",gridTemplateColumns:"1fr 1fr 120px 150px",gap:12,alignItems:"center",padding:"12px 0",borderBottom:`1px solid ${G.gy200}`}},
+        React.createElement("strong",{style:{fontSize:14,color:G.gy800}},u[0]),
+        React.createElement("span",{style:{fontSize:12,color:G.gy600}},u[1]),
+        React.createElement("span",{style:badge(G.g100,G.g700)},u[2]),
+        React.createElement("span",{style:{fontSize:12,color:G.gy600}},u[3])
+      ))
+    )
+  );
+}
+
+function Footer({setPage}){
+  return React.createElement("footer",{style:{background:G.g700,color:G.g100,padding:"30px 20px 14px"}},
+    React.createElement("div",{style:{maxWidth:1100,margin:"0 auto"}},
+      React.createElement("div",{style:{display:"grid",gridTemplateColumns:"2fr 1fr 1fr 1fr",gap:24,marginBottom:22}},
+        React.createElement("div",{},
+          React.createElement("div",{style:{fontFamily:serif,fontSize:19,color:G.w,marginBottom:9}},"🌱 FruitLink"),
+          React.createElement("p",{style:{fontSize:12,color:"rgba(255,255,255,.55)",lineHeight:1.7,maxWidth:240}},"Kết nối nông dân – nhà đầu tư – người tiêu dùng. Xây dựng nông nghiệp Việt Nam bền vững.")
+        ),
+        ...[["Nền tảng",["Khám phá","Đầu tư","Theo dõi","Du lịch"]],["Hỗ trợ",["Hướng dẫn","FAQ","Liên hệ","Chính sách"]],["Công nghệ",["hAgri","Truy xuất QR","Nhật ký số","API"]]].map(([t,ls])=>
+          React.createElement("div",{key:t},
+            React.createElement("div",{style:{color:G.w,fontWeight:500,marginBottom:10,fontSize:13}},t),
+            ls.map(l=>React.createElement("div",{key:l,style:{color:"rgba(255,255,255,.5)",fontSize:12,marginBottom:6,cursor:"pointer"}},l))
+          )
+        )
+      ),
+      React.createElement("div",{style:{borderTop:"1px solid rgba(255,255,255,.12)",paddingTop:16,display:"flex",justifyContent:"space-between"}},
+        React.createElement("span",{style:{fontSize:11,color:"rgba(255,255,255,.4)"}},"© 2025 FruitLink · Powered by hAgri"),
+        React.createElement("span",{style:{fontSize:11,color:"rgba(255,255,255,.4)"}},'Từ "giải cứu" đến thịnh vượng 🌾')
+      )
+    )
+  );
+}
+
+
+class FruitLinkErrorBoundary extends React.Component{
+  constructor(props){super(props);this.state={hasError:false,error:null};}
+  static getDerivedStateFromError(error){return {hasError:true,error};}
+  render(){
+    if(this.state.hasError){
+      return React.createElement("div",{style:{padding:40,maxWidth:720,margin:"60px auto",background:G.w,border:`1px solid ${G.gy200}`,borderRadius:16,fontFamily:sans}},
+        React.createElement("h2",{style:{color:G.r500,fontFamily:serif}},"Trang demo gặp lỗi"),
+        React.createElement("p",{style:{color:G.gy600}},this.state.error?this.state.error.message:"Vui lòng tải lại trang."),
+        React.createElement("button",{style:btn(G.g500,G.w),onClick:()=>window.location.reload()},"Tải lại")
+      );
+    }
+    return this.props.children;
+  }
+}
+
+function App(){
+  const [page,setPage]=useState("home");
+  const [user,setUser]=useState(null);
+  const pid=page.startsWith("product-")?parseInt(page.split("-")[1]):null;
+  const render=()=>{
+    if(pid) return React.createElement(ProductDetailPage,{productId:pid,setPage});
+    if(page==="login") return React.createElement(AuthPage,{type:"login",setPage,setUser});
+    if(page==="register") return React.createElement(AuthPage,{type:"register",setPage,setUser});
+    if(page==="profile") return user?React.createElement(ProfilePage,{user,setPage}):React.createElement(AuthPage,{type:"login",setPage,setUser});
+    if(page==="admin") return user&&user.role==="admin"?React.createElement(AdminPage,{setPage}):React.createElement(AuthPage,{type:"login",setPage,setUser});
+    if(page==="farmer") return React.createElement(FarmerPage,{setPage});
+    if(page==="home") return React.createElement(HomePage,{setPage});
+    if(page==="explore") return React.createElement(ExplorePage,{setPage});
+    if(page==="invest") return React.createElement(InvestPage,{setPage});
+    if(page==="track") return React.createElement(TrackPage,{});
+    if(page==="tour") return React.createElement(TourPage,{});
+    return React.createElement(HomePage,{setPage});
+  };
+  return React.createElement("div",{style:{fontFamily:sans,background:G.gy50,minHeight:"100vh",color:G.gy800}},
+    React.createElement(Navbar,{page,setPage,user,setUser}),
+    React.createElement("main",{style:{minHeight:"78vh"}},render()),
+    React.createElement(Footer,{setPage})
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(FruitLinkErrorBoundary,null,React.createElement(App)));

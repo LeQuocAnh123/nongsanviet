@@ -1,7 +1,6 @@
 services:
   wordpress:
     image: wordpress:latest
-    container_name: nongsanviet_wordpress
     restart: always
     ports:
       - "8080:80"
@@ -15,7 +14,6 @@ services:
 
   db:
     image: mysql:8.0
-    container_name: nongsanviet_mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
@@ -29,7 +27,6 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
-    container_name: nongsanviet_phpmyadmin
     restart: always
     ports:
       - "8081:80"

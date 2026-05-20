@@ -349,3 +349,69 @@ class Auto_Save_Images{
     }
 }
 new Auto_Save_Images();
+
+require_once get_stylesheet_directory() . '/inc/fruitlink-data.php';
+require_once get_stylesheet_directory() . '/inc/fruitlink-render.php';
+
+function fruitlink_enqueue_assets() {
+    $theme_uri = get_stylesheet_directory_uri();
+
+    wp_enqueue_style(
+        'fruitlink-ui',
+        $theme_uri . '/fruitlink.css',
+        [],
+        '1.0.0'
+    );
+
+    if (!is_front_page()) {
+        return;
+    }
+
+    wp_enqueue_script(
+        'fruitlink-react',
+        $theme_uri . '/js/react.production.min.js',
+        [],
+        '18.2.0',
+        true
+    );
+
+    wp_enqueue_script(
+        'fruitlink-react-dom',
+        $theme_uri . '/js/react-dom.production.min.js',
+        ['fruitlink-react'],
+        '18.2.0',
+        true
+    );
+
+    wp_enqueue_script(
+        'fruitlink-full-app',
+        $theme_uri . '/js/fruitlink-full-app.js',
+        ['fruitlink-react', 'fruitlink-react-dom'],
+        '1.0.0',
+        true
+    );
+}
+add_action('wp_enqueue_scripts', 'fruitlink_enqueue_assets', 20);
+
+function fruitlink_body_class($classes) {
+    if (is_front_page()) {
+        $classes[] = 'fruitlink-front-page';
+    }
+
+    return $classes;
+}
+add_filter('body_class', 'fruitlink_body_class');
+
+function fruitlink_homepage_shortcode() {
+    return fruitlink_render_homepage();
+}
+add_shortcode('fruitlink_homepage', 'fruitlink_homepage_shortcode');
+
+function fruitlink_replace_front_page_content($content) {
+    if (!is_front_page() || is_admin() || !in_the_loop() || !is_main_query()) {
+        return $content;
+    }
+
+    return fruitlink_render_homepage();
+}
+add_filter('the_content', 'fruitlink_replace_front_page_content', 20);

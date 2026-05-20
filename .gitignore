@@ -1,0 +1,32 @@
+# Local worktrees and Claude state
+.worktrees/
+.claude/worktrees/
+
+# Environment
+.env
+.env.local
+
+# Database dumps
+*.sql.gz
+
+# Docker/local data
+db_data/
+
+# WordPress runtime files
+src/nongsanviet/wp-content/cache/
+src/nongsanviet/wp-content/upgrade/
+
+# Duplicator legacy artifacts
+*.daf
+src/nongsanviet/dup-installer/
+src/nongsanviet/dup-*.txt
+src/nongsanviet/.htaccess.*.orig
+src/nongsanviet/htaccess.orig*
+
+# IDE/OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
